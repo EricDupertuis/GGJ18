@@ -1,8 +1,8 @@
 /* globals __DEV__ */
 import Phaser from 'phaser';
-import Mushroom from '../sprites/Mushroom';
 import Player from '../sprites/Player';
 import Enemy from '../sprites/Enemy';
+import { handleEnemyHit } from '../utils/CollisionHandler';
 
 export default class extends Phaser.State {
     init() {
@@ -72,11 +72,7 @@ export default class extends Phaser.State {
     }
 
     update() {
-        this.bullets.forEachAlive(function (bullet) {
-            if (bullet.bulletUpdate) {
-                bullet.bulletUpdate(bullet);
-            }
-        }, this);
+        this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, null, this);
     }
 
     resetBullet(bullet) {
