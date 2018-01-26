@@ -2,6 +2,7 @@
 import Phaser from 'phaser';
 import Mushroom from '../sprites/Mushroom';
 import Player from '../sprites/Player';
+import Enemy from '../sprites/Enemy';
 
 export default class extends Phaser.State {
     init() {
@@ -32,6 +33,9 @@ export default class extends Phaser.State {
         this.bullets = this.game.add.group();
         this.bullets.enableBody = true;
         this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
+        this.bullets.createMultiple(300, 'bullet');
+        this.bullets.setAll('anchor.x', 0.5);
+        this.bullets.setAll('anchor.y', 1);
         this.bullets.setAll('outOfBoundsKill', true);
         this.bullets.setAll('checkWorldBounds', true);
 
@@ -49,9 +53,16 @@ export default class extends Phaser.State {
         this.player = new Player({
             game: this.game,
             x: this.world.centerX,
-            y: this.world.centerY,
+            y: 600,
             asset: 'player'
-        })
+        });
+
+        this.enemy = new Enemy({
+            game: this.game,
+            x: this.world.centerX,
+            y: 300,
+            asset: 'enemy'
+        });
 
         //  Add basic controls
         this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -60,6 +71,7 @@ export default class extends Phaser.State {
         this.secondButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
 
         this.game.add.existing(this.player);
+        this.game.add.existing(this.enemy);
     }
 
     render() {
@@ -76,5 +88,20 @@ export default class extends Phaser.State {
                 bullet.bulletUpdate(bullet);
             }
         }, this);
+
+        let max_speed = 10;
+
+        if (this.cursors.left.isDown) {
+            this.player.x -= max_speed;
+        } else if (this.cursors.right.isDown) {
+            this.player.moving = true;
+            this.player.x += max_speed;
+        }       
+
+        if (this.cursors.up.isDown) {
+            this.player.y -= max_speed;
+        } else if (this.cursors.down.isDown) {
+            this.player.y += max_speed;
+        }
     }
 }
