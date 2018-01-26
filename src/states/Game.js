@@ -1,6 +1,7 @@
 /* globals __DEV__ */
-import Phaser from 'phaser'
-import Mushroom from '../sprites/Mushroom'
+import Phaser from 'phaser';
+import Mushroom from '../sprites/Mushroom';
+import Player from '../sprites/Player';
 
 export default class extends Phaser.State {
     init() {
@@ -19,7 +20,9 @@ export default class extends Phaser.State {
     }
 
     preload() {
-
+        this.game.load.image('enemyBullet', 'assets/placeholders/bullet.png');
+        this.game.load.image('enemy', 'assets/placeholders/enemy.png');
+        this.game.load.image('player', 'assets/placeholders/enemy.png');
     }
 
     create() {
@@ -58,5 +61,13 @@ export default class extends Phaser.State {
             this.game.debug.spriteInfo()
         }
         */
+    }
+
+    update() {
+        this.bullets.forEachAlive(function (bullet) {
+            if (bullet.bulletUpdate) {
+                bullet.bulletUpdate(bullet);
+            }
+        }, this);
     }
 }
