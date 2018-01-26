@@ -18,6 +18,7 @@ export default class extends Phaser.State {
         this.scoreText = null;
         this.lives = null;
         this.backgroundTween = null;
+        this.bulletTime = 0;
     }
 
     preload() {
@@ -31,6 +32,7 @@ export default class extends Phaser.State {
 
         //  Our bullet group
         this.bullets = this.game.add.group();
+        this.bullets.enableBody = true;
         this.bullets.createMultiple(300, 'bullet');
         this.bullets.setAll('anchor.x', 0.5);
         this.bullets.setAll('anchor.y', 1);
@@ -85,17 +87,48 @@ export default class extends Phaser.State {
 
         let max_speed = 10;
 
-        if (this.cursors.left.isDown) {
-            this.player.x -= max_speed;
-        } else if (this.cursors.right.isDown) {
-            this.player.moving = true;
-            this.player.x += max_speed;
-        }       
-
-        if (this.cursors.up.isDown) {
-            this.player.y -= max_speed;
-        } else if (this.cursors.down.isDown) {
-            this.player.y += max_speed;
+        if (this.player.isAlive) {
+            if (this.cursors.left.isDown) {
+                this.player.x -= max_speed;
+            } else if (this.cursors.right.isDown) {
+                this.player.moving = true;
+                this.player.x += max_speed;
+            }       
+    
+            if (this.cursors.up.isDown) {
+                this.player.y -= max_speed;
+            } else if (this.cursors.down.isDown) {
+                this.player.y += max_speed;
+            }
+    
+            if (this.mainButton.isDown) {
+                if (this.game.time.now > this.bulletTime) {
+                    this.fireBullet(null, 0, 'bullet');
+                    this.bulletTime = this.game.time.now + 100;
+                }
+            }
         }
+    }
+
+    fireBullet(update, angle = 0, animation = null) {
+        angle = angle * Math.PI / 180;
+
+        let bullet = this.bullets.getFirstExists(false);
+
+        if (bullet) {
+            bullet.scale.setTo(1, 1);
+
+            //  And fire it
+            bullet.reset(this.player.x, this.player.y + 8);
+            bullet.body.velocity.y -= Math.cos(angle) * 500;
+            bullet.body.velocity.x += Math.sin(angle) * 100;
+            bullet.fireTime = this.game.time.now;
+            bullet.bulletUpdate = update;
+        }
+    }
+
+    resetBullet(bullet) {
+        //  Called if the bullet goes out of the screen
+        bullet.kill();
     }
 }

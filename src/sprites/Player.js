@@ -7,6 +7,7 @@ export default class extends Phaser.Sprite {
         this.anchor.setTo(0.5);
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.collideWorldBounds = true;
+        this.isAlive = true;
     }
 
     update() {
