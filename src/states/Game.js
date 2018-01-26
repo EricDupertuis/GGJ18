@@ -35,6 +35,7 @@ export default class extends Phaser.State {
         this.bullets.setAll('anchor.x', 0.5);
         this.bullets.setAll('anchor.y', 1);
         this.bullets.setAll('outOfBoundsKill', true);
+        this.bullets.setAll('checkWorldBounds', true);
 
         // The enemy's bullets
         let enemyBullets = this.game.add.group();
@@ -44,6 +45,7 @@ export default class extends Phaser.State {
         this.enemyBullets.setAll('anchor.x', 0.5);
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
+        this.enemyBullets.setAll('checkWorldBounds', true);
 
         this.player = new Player({
             game: this.game,

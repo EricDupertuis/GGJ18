@@ -19,6 +19,9 @@ export default class extends Phaser.Sprite {
 
         // TODO remove scaling when we have a proper sprite
         this.scale.setTo(0.5, 0.5);
+
+        this.pad = this.game.input.gamepad.pad1;
+        this.game.input.gamepad.start();
     }
 
     update() {
@@ -33,23 +36,44 @@ export default class extends Phaser.Sprite {
             this.body.velocity.setTo(0, 0);
             this.moving = false;
 
-            if (this.cursors.left.isDown) {
-                this.body.velocity.x = -this.maxSpeed;
-            } else if (this.cursors.right.isDown) {
-                this.moving = true;
-                this.body.velocity.x = this.maxSpeed;
-            }
+            if (this.game.input.gamepad.supported && this.game.input.gamepad.active && this.pad.connected) {
+                if (this.pad.isDown(Phaser.Gamepad.XBOX360_LEFT_TRIGGER)) {
+                    if (this.game.time.now > this.bulletTime) {
+                        this.fireBullet(null, 0, 'bullet');
+                        this.bulletTime = this.game.time.now + 100;
+                        console.log(this.bullets.length);
+                    }
+                }
 
-            if (this.cursors.up.isDown) {
-                this.body.velocity.y = -this.maxSpeed;
-            } else if (this.cursors.down.isDown) {
-                this.body.velocity.y = this.maxSpeed;
-            }
+                var rightStickX = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X);
+                var rightStickY = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y);
 
-            if (this.mainButton.isDown) {
-                if (this.game.time.now > this.bulletTime) {
-                    this.fireBullet(null, 0, 'bullet');
-                    this.bulletTime = this.game.time.now + 100;
+                if (rightStickX) {
+                    this.x += rightStickX * 10;
+                }
+
+                if (rightStickY) {
+                    this.y += rightStickY * 10;
+                }
+            } else {
+                if (this.cursors.left.isDown) {
+                    this.body.velocity.x = -this.maxSpeed;
+                } else if (this.cursors.right.isDown) {
+                    this.moving = true;
+                    this.body.velocity.x = this.maxSpeed;
+                }
+
+                if (this.cursors.up.isDown) {
+                    this.body.velocity.y = -this.maxSpeed;
+                } else if (this.cursors.down.isDown) {
+                    this.body.velocity.y = this.maxSpeed;
+                }
+
+                if (this.mainButton.isDown) {
+                    if (this.game.time.now > this.bulletTime) {
+                        this.fireBullet(null, 0, 'bullet');
+                        this.bulletTime = this.game.time.now + 100;
+                    }
                 }
             }
         }
