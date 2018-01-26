@@ -1,8 +1,8 @@
 export default {
-    gameWidth: 1024,
-    gameHeight: 768,
-    localStorageName: 'phaseres6webpack',
+    gameWidth: 500,
+    gameHeight: 760,
+    localStorageName: 'ggj18',
     gamepadConfig: {
-        
+
     }
 }
