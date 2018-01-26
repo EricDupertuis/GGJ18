@@ -31,24 +31,18 @@ export default class extends Phaser.State {
 
         //  Our bullet group
         this.bullets = this.game.add.group();
-        this.bullets.enableBody = true;
-        this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
         this.bullets.createMultiple(300, 'bullet');
         this.bullets.setAll('anchor.x', 0.5);
         this.bullets.setAll('anchor.y', 1);
         this.bullets.setAll('outOfBoundsKill', true);
-        this.bullets.setAll('checkWorldBounds', true);
 
         // The enemy's bullets
         let enemyBullets = this.game.add.group();
         this.enemyBullets = this.backgroundGroup.add(enemyBullets);
-        this.enemyBullets.enableBody = true;
-        this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
         this.enemyBullets.createMultiple(300, 'enemyBullet');
         this.enemyBullets.setAll('anchor.x', 0.5);
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
-        this.enemyBullets.setAll('checkWorldBounds', true);
 
         this.player = new Player({
             game: this.game,
