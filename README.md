@@ -1,6 +1,6 @@
 # GGJ18 Project
 
-Bootstrap files based on : ![Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack)
+Bootstrap files based on : [Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack)
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
