@@ -16,6 +16,9 @@ export default class extends Phaser.Sprite {
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.mainButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         this.secondButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+
+        // TODO remove scaling when we have a proper sprite
+        this.scale.setTo(0.5, 0.5);
     }
 
     update() {
