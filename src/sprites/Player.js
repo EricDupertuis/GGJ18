@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from 'phaser';
 
 export default class extends Phaser.Sprite {
     constructor({ game, x, y, asset, bullets }) {
@@ -35,14 +35,14 @@ export default class extends Phaser.Sprite {
             } else if (this.cursors.right.isDown) {
                 this.moving = true;
                 this.body.velocity.x = this.maxSpeed;
-            }       
-    
+            }
+
             if (this.cursors.up.isDown) {
                 this.body.velocity.y = -this.maxSpeed;
             } else if (this.cursors.down.isDown) {
                 this.body.velocity.y = this.maxSpeed;
             }
-    
+
             if (this.mainButton.isDown) {
                 if (this.game.time.now > this.bulletTime) {
                     this.fireBullet(null, 0, 'bullet');

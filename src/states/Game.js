@@ -64,13 +64,15 @@ export default class extends Phaser.State {
     }
 
     render() {
-        //if (__DEV__) {
-        //    this.game.debug.spriteInfo()
-        //}
+        if (__DEV__) {
+            // this.game.debug.spriteInfo()
+        }
     }
 
     update() {
         this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, null, this);
+        this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, null, this);
+        this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
     }
 
     resetBullet(bullet) {
