@@ -20,9 +20,7 @@ export default class extends Phaser.State {
     }
 
     preload() {
-        this.game.load.image('enemyBullet', 'assets/placeholders/bullet.png');
-        this.game.load.image('enemy', 'assets/placeholders/enemy.png');
-        this.game.load.image('player', 'assets/placeholders/enemy.png');
+
     }
 
     create() {
@@ -48,11 +46,20 @@ export default class extends Phaser.State {
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
 
+        this.player = new Player({
+            game: this.game,
+            x: this.world.centerX,
+            y: this.world.centerY,
+            asset: 'player'
+        })
+
         //  Add basic controls
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
         this.mainButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         this.secondButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+
+        this.game.add.existing(this.player);
     }
 
     render() {
