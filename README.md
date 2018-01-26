@@ -5,6 +5,19 @@ Bootstrap files based on : [Phaser+ES6+Webpack](https://raw.githubusercontent.co
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 # Setup
+
+## Quick setup with Docker
+
+```sh
+# Install the dependencies. Docker will pull the node image automagically
+docker run -w /src -v $(pwd):/src node:9.4 npm install
+
+# Run it, the app is now available on localhost:3000 and autoreloads on changes
+docker run -w /src -v $(pwd):/src -p 3000:3000 -p 3001:3001 node:9.4 npm run dev
+```
+
+
+
 You'll need to install a few things before you have a working copy of the project.
 
 ## 1. Clone this repo:
@@ -26,7 +39,7 @@ Navigate to the cloned repo's directory.
 
 Run:
 
-```npm install``` 
+```npm install```
 
 ## 4. Run the development server:
 
@@ -53,7 +66,7 @@ Make sure to uncomment the cordova.js file in the src/index.html and to update c
 More informations about the cordova configuration:
 https://cordova.apache.org/docs/en/latest/config_ref/
 
-There is 3 platforms actually tested and supported : 
+There is 3 platforms actually tested and supported :
 - browser
 - ios
 - android
