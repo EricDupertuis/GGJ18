@@ -9,7 +9,7 @@ export default class extends Phaser.Sprite {
         this.enableBody = true;
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.collideWorldBounds = true;
-        this.isAlive = true;
+        this.alive = true;
         this.moving = false;
         this.maxSpeed = 500;
         this.bulletTime = 0;
@@ -25,7 +25,7 @@ export default class extends Phaser.Sprite {
             }
         }, this);
 
-        if (this.isAlive) {
+        if (this.alive) {
             //  Reset the player, then check for movement keys
             this.body.velocity.setTo(0, 0);
             this.moving = false;
