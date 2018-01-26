@@ -4,34 +4,59 @@ import Mushroom from '../sprites/Mushroom'
 
 export default class extends Phaser.State {
     init() {
+        this.player = null;
+        this.ennemies = null;
+        this.bullets = null;
+        this.bulletTime = 0;
+        this.cursors = null; // cursors for command
+        this.explosions = null;
+        this.background = null;
+        this.score = 0;
+        this.scoreString = '';
+        this.scoreText = null;
+        this.lives = null;
+        this.backgroundTween = null;
+    }
+
+    preload() {
 
     }
-    preload() { }
 
     create() {
-        const bannerText = 'Phaser + ES6 + Webpack'
-        let banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText, {
-            font: '40px Bangers',
-            fill: '#77BFA3',
-            smoothed: false
-        })
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        banner.padding.set(10, 16)
-        banner.anchor.setTo(0.5)
+        this.backgroundGroup = this.game.add.group();
 
-        this.mushroom = new Mushroom({
-            game: this.game,
-            x: this.world.centerX,
-            y: this.world.centerY,
-            asset: 'mushroom'
-        })
+        //  Our bullet group
+        this.bullets = this.game.add.group();
+        this.bullets.enableBody = true;
+        this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
+        this.bullets.setAll('outOfBoundsKill', true);
+        this.bullets.setAll('checkWorldBounds', true);
 
-        this.game.add.existing(this.mushroom)
+        // The enemy's bullets
+        let enemyBullets = this.game.add.group();
+        this.enemyBullets = this.backgroundGroup.add(enemyBullets);
+        this.enemyBullets.enableBody = true;
+        this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+        this.enemyBullets.createMultiple(300, 'enemyBullet');
+        this.enemyBullets.setAll('anchor.x', 0.5);
+        this.enemyBullets.setAll('anchor.y', 1);
+        this.enemyBullets.setAll('outOfBoundsKill', true);
+        this.enemyBullets.setAll('checkWorldBounds', true);
+
+        //  Add basic controls
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        this.mainButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        this.secondButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
     }
 
     render() {
+        /*
         if (__DEV__) {
-            this.game.debug.spriteInfo(this.mushroom, 32, 32)
+            this.game.debug.spriteInfo()
         }
+        */
     }
 }
