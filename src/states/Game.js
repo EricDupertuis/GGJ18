@@ -39,6 +39,7 @@ export default class extends Phaser.State {
         // The enemy's bullets
         let enemyBullets = this.game.add.group();
         this.enemyBullets = this.backgroundGroup.add(enemyBullets);
+        this.enemyBullets.enableBody = true;
         this.enemyBullets.createMultiple(300, 'enemyBullet');
         this.enemyBullets.setAll('anchor.x', 0.5);
         this.enemyBullets.setAll('anchor.y', 1);
@@ -56,7 +57,8 @@ export default class extends Phaser.State {
             game: this.game,
             x: this.world.centerX,
             y: 300,
-            asset: 'enemy'
+            asset: 'enemy',
+            enemyBullets: this.enemyBullets
         });
 
         this.game.add.existing(this.player);
