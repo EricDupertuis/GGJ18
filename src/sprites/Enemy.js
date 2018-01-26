@@ -17,14 +17,14 @@ export default class extends Phaser.Sprite {
     update() {
         if (this.alive) {
             if (this.game.time.now > this.bulletTime) {
-                this.bulletTime = this.game.time.now + 100;
+                this.bulletTime = this.game.time.now + 500;
                 this.fired = true;
 
                 let bullet = this.bullets.getFirstExists(false);
 
                 if (bullet) {
                     bullet.reset(this.x, this.y);
-                    bullet.body.velocity.x = -1000;
+                    bullet.body.velocity.y = 500;
                 }
             }
         }

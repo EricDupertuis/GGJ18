@@ -56,7 +56,7 @@ export default class extends Phaser.State {
         this.enemy = new Enemy({
             game: this.game,
             x: this.world.centerX,
-            y: 300,
+            y: 100,
             asset: 'enemy',
             enemyBullets: this.enemyBullets
         });
