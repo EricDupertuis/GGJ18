@@ -1,6 +1,6 @@
 export default {
-    gameWidth: 500,
-    gameHeight: 760,
+    gameWidth: 1024,
+    gameHeight: 768,
     localStorageName: 'ggj18',
     gamepadConfig: {
 
