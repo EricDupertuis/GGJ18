@@ -2,7 +2,7 @@
 import Phaser from 'phaser';
 import Player from '../sprites/Player';
 import Enemy from '../sprites/Enemy';
-import { handleEnemyHit } from '../utils/CollisionHandler';
+import { handleEnemyHit, handlePlayerHit, handleEnemyPlayerCollision } from '../utils/CollisionHandler';
 
 export default class extends Phaser.State {
     init() {
@@ -64,11 +64,9 @@ export default class extends Phaser.State {
     }
 
     render() {
-        /*
-        if (__DEV__) {
-            this.game.debug.spriteInfo()
-        }
-        */
+        //if (__DEV__) {
+        //    this.game.debug.spriteInfo()
+        //}
     }
 
     update() {
