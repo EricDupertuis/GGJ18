@@ -59,6 +59,7 @@ export default class extends Phaser.Sprite {
 
             // Shoot da gunz
             this.pattern.update();
+            this.patternsLibrary.update();
         }
     }
 }

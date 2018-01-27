@@ -123,10 +123,14 @@ class RandomBulletEmitter {
                 );
             }
         }
+    }
 
+    updateBullets() {
         /* Decays the bullet speed */
         this.ourBullets.forEach((b) => {
-            let decay = Math.exp(dt * Math.log(0.5) / config.patterns.randomBulletEmitter.bulletSpeedHalftime);
+            let lambda = config.patterns.randomBulletEmitter.bulletSpeedHalftime;
+            const dt = 0.016;
+            let decay = Math.exp(dt * Math.log(0.5) / lambda);
             b.body.velocity.x *= decay;
             b.body.velocity.y *= decay;
 
@@ -302,9 +306,11 @@ export default class PatternsLibrary {
         this.bulletPatterns = bulletPatternsArray;
     }
 
-    updatePatterns() {
-        this.bulletPatterns.forEach(function (bulletPattern) {
-            bulletPattern.update();
+    update() {
+        this.bulletPatterns.forEach((b) => {
+            if (b.updateBullets !== undefined) {
+                b.updateBullets();
+            }
         });
     }
 
