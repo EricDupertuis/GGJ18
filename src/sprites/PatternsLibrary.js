@@ -305,6 +305,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[5];
+        return this.bulletPatterns[Math.floor(Math.random()*this.bulletPatterns.length)];
     }
 }
