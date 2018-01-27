@@ -60,6 +60,10 @@ export default class extends Phaser.State {
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
 
+        //  That's one explosive group you got there sir
+        this.blueExplosions = this.game.add.group();
+        this.blueExplosions.createMultiple(50, 'blueExplosion');
+
         this.rightPanel = new Phaser.Graphics(
             this.game,
             config.worldBoundX,
