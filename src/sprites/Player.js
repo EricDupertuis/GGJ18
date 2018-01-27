@@ -124,7 +124,7 @@ export default class extends Phaser.Sprite {
                 }
             } else if (this.shiftDown.justDown) {
                 if (this.currentGear > 1) {
-                    this.currentGear--;                    
+                    this.currentGear--;
                     this.maxSpeed = config.speeds.minSpeed * this.currentGear;
                 }
             }
