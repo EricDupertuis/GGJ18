@@ -10,6 +10,7 @@
         "cordova": "webpack --config webpack.cordova.config.js",
         "test": "eslint './src/**/*.js'"
     },
+    "homepage": "https://edupertuis.net/GGJ18/",
     "license": "MIT",
     "devDependencies": {
         "babel-core": "^6.26.0",
