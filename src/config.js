@@ -1,8 +1,8 @@
 export default {
     gameWidth: 1280,
-    gameHeight: 980,
+    gameHeight: 880,
     worldBoundX: 880,
-    worldBoundY: 980,
+    worldBoundY: 880,
     localStorageName: 'ggj18',
     speeds: {
         numberOfGears: 5,
@@ -35,6 +35,28 @@ export default {
         avocadoGreen: '#19B226',
         neonGreen: '#26FF5E',
         darkGreen: '#264C47'
+    },
+    ui: {
+        padding: 20,
+        textConfig: {
+            font: '32px Risque',
+            fill: '#fff'
+        },
+        texts: {
+            scoreText: {
+                text: 'Score: ',
+                y: 20
+            },
+            livesText: {
+                text: 'Lives: ',
+                y: 75
+            },
+            gearsText: {
+                text: 'Current gear: ',
+                y: 130,
+                spacing: 35
+            }
+        }
     },
     patterns: {
         selected: 0,
