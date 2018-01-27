@@ -17,7 +17,16 @@ export default {
 
     },
     enemyConfig: {
-        health: 1000
+        health: 1000,
+
+        // Physical model. Increase kp to make the enemy move faster and
+        // increase kd to reduce the oscillations
+        kp: 50,
+        kd: 5,
+
+        phase2: {
+            movementPeriod: 20
+        }
     },
     colorPalette: {
         softBlue: '#7593C9',
@@ -28,7 +37,7 @@ export default {
         darkGreen: '#264C47'
     },
     patterns: {
-        selected: 4,
+        selected: 0,
         randomBulletEmitter: {
             rate: 50,
             bulletSpeed: 500,
@@ -36,7 +45,7 @@ export default {
             /* Bullet speed half time in second.
              * e.g. 2 means that the bullet will half its speed in 2 seconds. */
             bulletSpeedHalftime: 0.8,
-            bulletSpeedMin: 75
+            bulletSpeedMin: 130
         },
         sinePattern: {
             bulletSpeed: 200,
@@ -49,9 +58,9 @@ export default {
             angles: [-60, -40, -20, 0, 20, 40, 60]
         },
         crossAimPattern: {
-            bulletSpeed: 1000,
+            bulletSpeed: 700,
             interval: 80,
-            cooldown: 0.5
+            cooldown: 1
         },
         crossEmitter: {
             bulletSpeed: 300,

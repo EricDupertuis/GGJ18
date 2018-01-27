@@ -263,6 +263,18 @@ class CrossEmitter {
     }
 }
 
+class PatternCombinator {
+    constructor(patterns) {
+        this.patterns = patterns;
+    }
+
+    update() {
+        this.patterns.forEach((b) => {
+            b.update();
+        }, this);
+    }
+}
+
 export default class PatternsLibrary {
     constructor(owner, game, bullets, player) {
         this.bulletPatterns = [];
@@ -281,6 +293,11 @@ export default class PatternsLibrary {
         bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner));
         bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, this.player));
         bulletPatternsArray.push(new CrossEmitter(this.game, this.bullets, this.owner));
+
+        let p1 = new CrossAimPattern(this.game, this.bullets, this.owner, this.player);
+        let p2 = new CrossEmitter(this.game, this.bullets, this.owner);
+
+        bulletPatternsArray.push(new PatternCombinator([p1, p2]));
 
         this.bulletPatterns = bulletPatternsArray;
     }
