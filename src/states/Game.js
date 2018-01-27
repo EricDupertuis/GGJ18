@@ -115,8 +115,7 @@ export default class extends Phaser.State {
             this.scoreText.text = this.scoreString + this.score;
         }, this);
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, () => {
-            this.lives--;
-            this.livesText.text = this.livesString + this.player.lives;
+            this.livesText.text = this.livesString + (this.player.lives - 1);
         }, this);
         this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
     }
