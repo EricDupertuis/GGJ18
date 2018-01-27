@@ -18,7 +18,7 @@ docker run -w /src -v $(pwd):/src -p 3000:3000 -p 3001:3001 node:9.4 npm run dev
 
 ## Showing hitbox
 
-set the environment var `BUILD_DEV=1` when running webpack.
+set the environment var `BUILD_DEV=true` when running webpack.
 
 
 
