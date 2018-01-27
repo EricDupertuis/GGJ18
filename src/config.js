@@ -7,6 +7,7 @@ export default {
     speeds: {
         numberOfGears: 5,
         maxSpeed: 500,
+        minSpeed: 100,
         startGear: 5
     },
     gamepadConfig: {

@@ -11,7 +11,7 @@ export default class extends Phaser.Sprite {
         this.body.collideWorldBounds = true;
 
         this.moving = false;
-        this.maxSpeed = config.speeds.maxSpeed;
+        this.maxSpeed = config.speeds.minSpeed * config.speeds.startGear;
         this.currentGear = config.speeds.startGear;
         this.shiftCooldown = 0;
 
@@ -120,10 +120,12 @@ export default class extends Phaser.Sprite {
             if (this.shiftUp.justDown) {
                 if (this.currentGear < config.speeds.numberOfGears) {
                     this.currentGear++;
+                    this.maxSpeed = config.speeds.minSpeed * this.currentGear;
                 }
             } else if (this.shiftDown.justDown) {
                 if (this.currentGear > 1) {
-                    this.currentGear--;
+                    this.currentGear--;                    
+                    this.maxSpeed = config.speeds.minSpeed * this.currentGear;
                 }
             }
         }
