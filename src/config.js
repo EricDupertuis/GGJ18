@@ -4,6 +4,7 @@ export default {
     worldBoundX: 880,
     worldBoundY: 880,
     localStorageName: 'ggj18',
+    showMenu: false,
     speeds: {
         numberOfGears: 3,
         maxSpeed: 500,

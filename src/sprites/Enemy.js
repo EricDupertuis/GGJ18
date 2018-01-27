@@ -22,11 +22,14 @@ export default class extends Phaser.Sprite {
         this.health = config.enemyConfig.health;
 
         this.state = config.enemyConfig.startingState;
-        this.lastStateChange = 0;
     }
 
     update() {
         const movementPeriod = config.enemyConfig.phase2.movementPeriod;
+
+        if (this.lastStateChange === undefined) {
+            this.lastStateChange = this.game.time.now;
+        }
 
         if (this.alive) {
             // TODO: Maybe move based on remaining life ?
