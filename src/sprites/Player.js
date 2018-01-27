@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import config from '../config';
 
 export default class extends Phaser.Sprite {
-    constructor({ game, x, y, asset, bullets, lives = 5 }) {
+    constructor({ game, x, y, asset, bullets, explosions }) {
         super(game, x, y, asset, bullets);
 
         this.anchor.setTo(0.5);
@@ -11,16 +11,17 @@ export default class extends Phaser.Sprite {
         this.body.collideWorldBounds = true;
 
         this.moving = false;
-        this.maxSpeed = config.speeds.minSpeed * config.speeds.startGear;
-        this.currentGear = config.speeds.startGear;
+        this.maxSpeed = config.speeds.minSpeed * config.speeds.numberOfGears;
+        this.currentGear = config.speeds.numberOfGears;
         this.shiftCooldown = 0;
 
         this.bullets = bullets;
         this.bulletTime = 0;
         this.hitCooldown = 0;
+        this.explosions = explosions;
 
         this.alive = true;
-        this.lives = lives;
+        this.lives = 5;
 
         this.body.setSize(2, 3, 15, 9);
 
