@@ -1,23 +1,24 @@
 import config from '../config';
 
 class SinePattern {
-    constructor(game, bullets, shooter, speed, frequency, salveInterval) {
+    constructor(game, bullets, shooter) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
-        this.frequency = frequency;
-        this.salveInterval = salveInterval;
-        this.speed = speed;
         this.bulletTime = 0;
     }
 
     update() {
+        const f = config.patterns.sinePattern.frequency;
+        const speed = config.patterns.sinePattern.bulletSpeed;
+        const interval = config.patterns.sinePattern.interval;
+
         let nowTime = this.game.time.now;
-        let vx = -Math.sin((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.speed;
-        let vy = Math.abs(Math.cos((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.speed);
+        let vx = -Math.sin((nowTime / 1000) * 2 * Math.PI * f) * speed;
+        let vy = Math.abs(Math.cos((nowTime / 1000) * 2 * Math.PI * f) * speed);
 
         if (this.game.time.now > this.bulletTime) {
-            this.bulletTime = this.game.time.now + this.salveInterval;
+            this.bulletTime = this.game.time.now + (1000 * interval / speed);
 
             let bullet = this.bullets.getFirstExists(false);
             if (bullet) {
@@ -77,12 +78,10 @@ class StarPattern {
 }
 
 class RandomBulletEmitter {
-    constructor(game, bullets, shooter, speed, frequency) {
+    constructor(game, bullets, shooter) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
-        this.frequency = frequency;
-        this.speed = speed;
         this.previousTime = 0;
         this.ourBullets = [];
     }
@@ -276,15 +275,8 @@ export default class PatternsLibrary {
     loadPatterns() {
         let bulletPatternsArray = [];
 
-        /* Waves pattern */
-        let interval = 100;
-        let frequency = 0.4;
-        let speed = 200;
-
-        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets,
-            this.owner,
-            500, 50));
-        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, speed, frequency, interval));
+        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets));
+        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner));
         bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 400, 100, 0));
         bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 400, 100));
         bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, 1000, 80, this.player));
