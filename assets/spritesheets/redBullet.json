@@ -1,0 +1,44 @@
+{"frames": [
+
+{
+	"filename": "redBullet1.png",
+	"frame": {"x":0,"y":0,"w":11,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":11,"h":8},
+	"sourceSize": {"w":11,"h":8}
+},
+{
+	"filename": "redBullet2.png",
+	"frame": {"x":11,"y":0,"w":11,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":11,"h":8},
+	"sourceSize": {"w":11,"h":8}
+},
+{
+	"filename": "redBullet3.png",
+	"frame": {"x":22,"y":0,"w":15,"h":9},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":9},
+	"sourceSize": {"w":15,"h":9}
+},
+{
+	"filename": "redBullet4.png",
+	"frame": {"x":37,"y":0,"w":20,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":20,"h":10},
+	"sourceSize": {"w":20,"h":10}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "redBullet.png",
+	"format": "RGBA8888",
+	"size": {"w":57,"h":10},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:b721c8dc4d4135d1e582f6762dc69d68:e0d101c8ea6f8afe4b47096062dd7a3b:ea6b1abce725ff4840d140e9891ff7e1$"
+}
+}
