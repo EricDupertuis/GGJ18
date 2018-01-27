@@ -223,6 +223,51 @@ class CrossAimPattern {
     }
 }
 
+class CrossEmitter {
+    constructor(game, bullets, shooter, speed, frequency, rotationSpeed) {
+        this.game = game;
+        this.bullets = bullets;
+        this.shooter = shooter;
+        this.frequency = frequency;
+        this.speed = speed;
+        this.interval = 1000 * frequency / this.speed;
+        this.rotationSpeed = rotationSpeed * Math.PI / 180;
+        this.angle = 0;
+        this.N = 6;
+    }
+
+    update() {
+        if (this.previousTime === undefined) {
+            this.previousTime = this.game.time.now;
+        }
+
+        let dt = (this.game.time.now - this.previousTime) / 1000;
+        this.previousTime = this.game.time.now;
+
+        this.angle += dt * this.rotationSpeed;
+
+        if (this.bulletTime === undefined) {
+            this.bulletTime = this.game.time.now + this.interval;
+        }
+
+        if (this.game.time.now > this.bulletTime) {
+            for (let i = 0; i < this.N; i++) {
+                this.bulletTime = this.game.time.now + this.interval;
+                let bullet = this.bullets.getFirstExists(false);
+
+                if (bullet) {
+                    let angle = this.angle + Math.PI * 2 * (i / this.N);
+                    let vx = Math.cos(angle) * this.speed;
+                    let vy = Math.sin(angle) * this.speed;
+                    bullet.reset(this.shooter.x, this.shooter.y);
+                    bullet.body.velocity.x = vx;
+                    bullet.body.velocity.y = vy;
+                }
+            }
+        }
+    }
+}
+
 export default class PatternsLibrary {
     constructor(owner, game, bullets, player) {
         this.bulletPatterns = [];
@@ -248,6 +293,7 @@ export default class PatternsLibrary {
         bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 400, 100, 0));
         bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 400, 100));
         bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, 1000, 80, this.player));
+        bulletPatternsArray.push(new CrossEmitter(this.game, this.bullets, this.owner, 500, 80, 90));
 
         this.bulletPatterns = bulletPatternsArray;
     }
@@ -259,6 +305,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[4];
+        return this.bulletPatterns[5];
     }
 }
