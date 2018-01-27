@@ -290,31 +290,31 @@ export default class PatternsLibrary {
     }
 
     loadPatterns() {
-        let bulletPatternsArray = [];
+        this.bulletPatterns = {};
 
-        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets, this.owner));
-        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner));
-        bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner));
-        bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, this.player));
-        bulletPatternsArray.push(new CrossEmitter(this.game, this.bullets, this.owner));
+        this.bulletPatterns['random'] = new RandomBulletEmitter(this.game, this.bullets, this.owner);
 
-        let p1 = new CrossAimPattern(this.game, this.bullets, this.owner, this.player);
-        let p2 = new CrossEmitter(this.game, this.bullets, this.owner);
-
-        bulletPatternsArray.push(new PatternCombinator([p1, p2]));
-
-        this.bulletPatterns = bulletPatternsArray;
+        this.bulletPatterns['sine'] = new SinePattern(this.game, this.bullets, this.owner);
+        this.bulletPatterns['star'] = new StarPattern(this.game, this.bullets, this.owner);
+        this.bulletPatterns['aim'] = new CrossAimPattern(this.game, this.bullets, this.owner, this.player);
+        this.bulletPatterns['cross'] = new CrossEmitter(this.game, this.bullets, this.owner);
     }
 
     update() {
-        this.bulletPatterns.forEach((b) => {
+        for (var key in this.bulletPatterns) {
+            let b = this.bulletPatterns[key];
             if (b.updateBullets !== undefined) {
                 b.updateBullets();
             }
-        });
+        }
     }
 
-    getPatternAtRandom() {
-        return this.bulletPatterns[config.patterns.selected];
+    getPattern(name) {
+        let res = [];
+        name.split('+').forEach((n) => {
+            res.push(this.bulletPatterns[n]);
+        });
+
+        return new PatternCombinator(res);
     }
 }

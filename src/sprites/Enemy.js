@@ -16,12 +16,11 @@ export default class extends Phaser.Sprite {
         this.alive = true;
         this.player = player;
 
-        this.patternsLibrary = new PatternsLibrary(this, this.game, this.bullets, this.player);
-        this.pattern = this.patternsLibrary.getPatternAtRandom();
+        this.patterns = new PatternsLibrary(this, this.game, this.bullets, this.player);
 
         this.health = config.enemyConfig.health;
 
-        this.state = 'left';
+        this.state = config.enemyConfig.startingState;
         this.lastStateChange = 0;
     }
 
@@ -57,9 +56,20 @@ export default class extends Phaser.Sprite {
             this.body.acceleration.x = kp * dx - kd * this.body.velocity.x;
             this.body.acceleration.y = kp * dy - kd * this.body.velocity.y;
 
-            // Shoot da gunz
-            this.pattern.update();
-            this.patternsLibrary.update();
+            // Shoot da gunz with da correct patternz
+            let pattern;
+            if (this.state === 'left') {
+                const name = config.enemyConfig.phase2.leftPattern;
+                pattern = this.patterns.getPattern(name);
+            } else if (this.state === 'right') {
+                const name = config.enemyConfig.phase2.rightPattern;
+                pattern = this.patterns.getPattern(name);
+            }
+
+            if (pattern !== undefined) {
+                pattern.update();
+            }
+            this.patterns.update();
         }
     }
 }

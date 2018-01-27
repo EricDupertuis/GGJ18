@@ -24,8 +24,12 @@ export default {
         kp: 50,
         kd: 5,
 
+        startingState: 'right',
+
         phase2: {
-            movementPeriod: 20
+            leftPattern: 'random',
+            rightPattern: 'aim+cross',
+            movementPeriod: 5
         }
     },
     colorPalette: {
