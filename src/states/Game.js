@@ -55,7 +55,7 @@ export default class extends Phaser.State {
         this.enemyBullets.setAll('scale.y', 0.25);
         this.enemyBullets.setAll('tint', config.colorPalette.avocadoGreen);
         this.enemyBullets.setAll('anchor.x', 0.5);
-        this.enemyBullets.setAll('anchor.y', 1);
+        this.enemyBullets.setAll('anchor.y', 0.5);
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
 
@@ -75,6 +75,7 @@ export default class extends Phaser.State {
 
         this.enemy = new Enemy({
             game: this.game,
+            player: this.player,
             x: this.world.centerX,
             y: 100,
             asset: 'enemy',
