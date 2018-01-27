@@ -123,10 +123,14 @@ class RandomBulletEmitter {
                 );
             }
         }
+    }
 
+    updateBullets() {
         /* Decays the bullet speed */
         this.ourBullets.forEach((b) => {
-            let decay = Math.exp(dt * Math.log(0.5) / config.patterns.randomBulletEmitter.bulletSpeedHalftime);
+            let lambda = config.patterns.randomBulletEmitter.bulletSpeedHalftime;
+            const dt = 0.016;
+            let decay = Math.exp(dt * Math.log(0.5) / lambda);
             b.body.velocity.x *= decay;
             b.body.velocity.y *= decay;
 
@@ -286,29 +290,31 @@ export default class PatternsLibrary {
     }
 
     loadPatterns() {
-        let bulletPatternsArray = [];
+        this.bulletPatterns = {};
 
-        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets, this.owner));
-        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner));
-        bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner));
-        bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, this.player));
-        bulletPatternsArray.push(new CrossEmitter(this.game, this.bullets, this.owner));
+        this.bulletPatterns['random'] = new RandomBulletEmitter(this.game, this.bullets, this.owner);
 
-        let p1 = new CrossAimPattern(this.game, this.bullets, this.owner, this.player);
-        let p2 = new CrossEmitter(this.game, this.bullets, this.owner);
-
-        bulletPatternsArray.push(new PatternCombinator([p1, p2]));
-
-        this.bulletPatterns = bulletPatternsArray;
+        this.bulletPatterns['sine'] = new SinePattern(this.game, this.bullets, this.owner);
+        this.bulletPatterns['star'] = new StarPattern(this.game, this.bullets, this.owner);
+        this.bulletPatterns['aim'] = new CrossAimPattern(this.game, this.bullets, this.owner, this.player);
+        this.bulletPatterns['cross'] = new CrossEmitter(this.game, this.bullets, this.owner);
     }
 
-    updatePatterns() {
-        this.bulletPatterns.forEach(function (bulletPattern) {
-            bulletPattern.update();
+    update() {
+        for (var key in this.bulletPatterns) {
+            let b = this.bulletPatterns[key];
+            if (b.updateBullets !== undefined) {
+                b.updateBullets();
+            }
+        }
+    }
+
+    getPattern(name) {
+        let res = [];
+        name.split('+').forEach((n) => {
+            res.push(this.bulletPatterns[n]);
         });
-    }
 
-    getPatternAtRandom() {
-        return this.bulletPatterns[config.patterns.selected];
+        return new PatternCombinator(res);
     }
 }
