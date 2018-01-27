@@ -100,7 +100,7 @@ export default class extends Phaser.State {
 
         this.livesText = this.game.add.text(
             config.worldBoundX + 10,
-            44,
+            65,
             this.livesString + this.player.lives,
             {
                 font: '34px Arial',
@@ -111,7 +111,7 @@ export default class extends Phaser.State {
         for (let i = 0; i < config.speeds.numberOfGears; i++) {
             this.gearTexts[i] = this.game.add.text(
                 config.worldBoundX + 10,
-                74 + (34 * i),
+                120 + (34 * i),
                 i + 1,
                 { font: '34px Arial', fill: '#fff' }
             );
