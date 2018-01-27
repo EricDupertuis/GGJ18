@@ -278,7 +278,7 @@ export default class PatternsLibrary {
     loadPatterns() {
         let bulletPatternsArray = [];
 
-        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets));
+        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets, this.owner));
         bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner));
         bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner));
         bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, this.player));
