@@ -223,15 +223,17 @@ class CrossEmitter {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
-        this.frequency = frequency;
-        this.speed = speed;
-        this.interval = 1000 * frequency / this.speed;
         this.rotationSpeed = rotationSpeed * Math.PI / 180;
         this.angle = 0;
         this.N = 6;
     }
 
     update() {
+        const rotationSpeed = config.patterns.crossEmitter.rotationSpeed * Math.PI / 180;
+        const interval = config.patterns.crossEmitter.interval;
+        const speed = config.patterns.crossEmitter.bulletSpeed;
+        const N = config.patterns.crossEmitter.N;
+
         if (this.previousTime === undefined) {
             this.previousTime = this.game.time.now;
         }
@@ -239,21 +241,21 @@ class CrossEmitter {
         let dt = (this.game.time.now - this.previousTime) / 1000;
         this.previousTime = this.game.time.now;
 
-        this.angle += dt * this.rotationSpeed;
+        this.angle += dt * rotationSpeed;
 
         if (this.bulletTime === undefined) {
-            this.bulletTime = this.game.time.now + this.interval;
+            this.bulletTime = this.game.time.now + 1000 * interval / speed;
         }
 
         if (this.game.time.now > this.bulletTime) {
+            this.bulletTime = this.game.time.now + 1000 * interval / speed;
             for (let i = 0; i < this.N; i++) {
-                this.bulletTime = this.game.time.now + this.interval;
                 let bullet = this.bullets.getFirstExists(false);
 
                 if (bullet) {
-                    let angle = this.angle + Math.PI * 2 * (i / this.N);
-                    let vx = Math.cos(angle) * this.speed;
-                    let vy = Math.sin(angle) * this.speed;
+                    let angle = this.angle + Math.PI * 2 * (i / N);
+                    let vx = Math.cos(angle) * speed;
+                    let vy = Math.sin(angle) * speed;
                     bullet.reset(this.shooter.x, this.shooter.y);
                     bullet.body.velocity.x = vx;
                     bullet.body.velocity.y = vy;

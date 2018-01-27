@@ -25,7 +25,7 @@ export default {
         darkGreen: '#264C47'
     },
     patterns: {
-        selected: 3,
+        selected: 4,
         randomBulletEmitter: {
             rate: 50,
             bulletSpeed: 500,
@@ -49,6 +49,12 @@ export default {
             bulletSpeed: 1000,
             interval: 80,
             cooldown: 0.5
+        },
+        crossEmitter: {
+            bulletSpeed: 300,
+            interval: 30,
+            rotationSpeed: 150,
+            N: 4 /* number of beams */
         }
     }
 };
