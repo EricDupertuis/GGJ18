@@ -148,7 +148,7 @@ export default class extends Phaser.State {
         }, this);
 
         this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, () => {
-            this.score++;
+            this.score += config.speeds.scoreMultipliers[this.player.currentGear - 1];
             this.scoreText.text = this.scoreString + this.score;
 
             let explosion = this.enemy.explosions.getFirstExists(false);

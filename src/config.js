@@ -8,7 +8,8 @@ export default {
     speeds: {
         numberOfGears: 3,
         maxSpeed: 500,
-        minSpeed: 100
+        minSpeed: 100,
+        scoreMultipliers: [100, 1000, 2000]
     },
     gamepadConfig: {
 
@@ -86,9 +87,9 @@ export default {
             angles: [-60, -40, -20, 0, 20, 40, 60]
         },
         crossAimPattern: {
-            bulletSpeed: 700,
+            bulletSpeed: 500,
             interval: 80,
-            cooldown: 1
+            cooldown: 2
         },
         crossEmitter: {
             bulletSpeed: 300,
