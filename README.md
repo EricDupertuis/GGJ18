@@ -52,6 +52,16 @@ This will run a server so you can run the game in a browser. It will also start 
 To run the game, open your browser and enter http://localhost:3000 into the address bar.
 
 
+## Before pushing to the remote
+
+Before pushing to the remote repository, make sure to run:
+
+```npm test```
+
+This will parse the code with ESlint. Please fix all errors before pushing to the remote because this will break the build on TravisCI.
+
+*It's a good idea to run these tests before commiting ;)*
+
 ## Build for deployment:
 
 Run:
