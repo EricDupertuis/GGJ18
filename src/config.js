@@ -8,7 +8,7 @@ export default {
         numberOfGears: 5,
         maxSpeed: 500,
         startGear: 5,
-        shiftCooldown: 5000
+        shiftCooldown: 200
     },
     gamepadConfig: {
 

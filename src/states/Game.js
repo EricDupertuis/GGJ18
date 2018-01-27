@@ -22,6 +22,7 @@ export default class extends Phaser.State {
         this.scoreText = null;
         this.livesText = null;
         this.ui = null;
+        this.gearTexts = [];
 
         this.backgroundTween = null;
     }
@@ -105,6 +106,15 @@ export default class extends Phaser.State {
                 fill: '#fff'
             }
         );
+
+        for (let i = 0; i < config.speeds.numberOfGears; i++) {
+            this.gearTexts[i] = this.game.add.text(
+                config.worldBoundX + 10,
+                74 + (34 * i),
+                i + 1,
+                {font: "34px Arial", fill: "#fff"}
+            );
+        }
     }
 
     render() {
@@ -114,6 +124,13 @@ export default class extends Phaser.State {
     }
 
     update() {
+        this.gearTexts.forEach(function (entry, i) {
+            entry.alpha = 1;
+            if (i != this.player.currentGear -1) {
+                entry.alpha = 0.6;
+            }
+        }, this);
+
         this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, () => {
             this.score++;
             this.scoreText.text = this.scoreString + this.score;

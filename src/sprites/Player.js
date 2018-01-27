@@ -14,11 +14,11 @@ export default class extends Phaser.Sprite {
         this.maxSpeed = config.speeds.maxSpeed;
         this.currentGear = config.speeds.startGear;
         this.shiftCooldown = 0;
-        
+
         this.bullets = bullets;
         this.bulletTime = 0;
         this.hitCooldown = 0;
-        
+
         this.alive = true;
         this.lives = lives;
 
@@ -117,19 +117,15 @@ export default class extends Phaser.Sprite {
                 this.fireBullet(null, 0, 'bullet');
             }
 
-            if (this.shiftUp.isDown) {
-                if (this.game.time.now > this.shiftCooldown) {
+            if (this.shiftUp.justDown) {
+                if (this.currentGear < config.speeds.numberOfGears) {
                     this.currentGear++;
-                    this.shiftCooldown = this.game.time.now + config.speeds.shiftCooldown;
                 }
-            }
-
-            if (this.shiftDown.isDown) {
-                if (this.game.time.now > this.shiftCooldown) {
+            } else if (this.shiftDown.justDown) {
+                if (this.currentGear > 1 ) {
                     this.currentGear--;
-                    this.shiftCooldown = this.game.time.now + config.speeds.shiftCooldown;
                 }
             }
-         }
+        }
     }
 }
