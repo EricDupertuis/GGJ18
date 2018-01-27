@@ -34,6 +34,8 @@ export default class extends Phaser.Sprite {
         this.mainGunButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         this.shiftUp = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
         this.shiftDown = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        this.animations.add('player', null, 20, true, true);
+        
     }
 
     update() {
@@ -53,6 +55,8 @@ export default class extends Phaser.Sprite {
         } else {
             this.tint = 0xffffff;
         }
+
+        this.animations.play('player');        
     }
 
     fireBullet(update, angle = 0, animation = null) {
