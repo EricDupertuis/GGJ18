@@ -79,8 +79,8 @@ export default class extends Phaser.State {
             asset: 'enemy',
             enemyBullets: this.enemyBullets
         });
-        
-        this.enemy.tint=config.colorPalette.neonGreen;
+
+        this.enemy.tint = config.colorPalette.neonGreen;
         this.game.add.existing(this.player);
         this.game.add.existing(this.enemy);
 

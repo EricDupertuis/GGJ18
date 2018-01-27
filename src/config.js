@@ -11,11 +11,11 @@ export default {
 
     },
     colorPalette: {
-        softBlue: "#7593C9",
-        grey: "#3A3A3A",
-        neonOrange: "#F84526",
-        avocadoGreen: "#19B226",
-        neonGreen: "#26FF5E",
-        darkGreen: "#264C47"
+        softBlue: '#7593C9',
+        grey: '#3A3A3A',
+        neonOrange: '#F84526',
+        avocadoGreen: '#19B226',
+        neonGreen: '#26FF5E',
+        darkGreen: '#264C47'
     }
 };

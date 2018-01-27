@@ -34,10 +34,10 @@ class StraightPattern {
         this.shooter = shooter;
         this.speed = speed;
         this.interval = interval / this.speed;
-        this.angle = angle*Math.PI/180
+        this.angle = angle * Math.PI / 180;
     }
     update() {
-        if (this.bulletTime  == undefined) {
+        if (this.bulletTime === undefined) {
             this.bulletTime = this.game.time.now + this.interval;
         }
 
@@ -45,8 +45,8 @@ class StraightPattern {
             this.bulletTime = this.game.time.now + this.interval;
             let bullet = this.bullets.getFirstExists(false);
 
-            let vx = Math.sin(this.angle)*this.speed;
-            let vy = Math.cos(this.angle)*this.speed;
+            let vx = Math.sin(this.angle) * this.speed;
+            let vy = Math.cos(this.angle) * this.speed;
 
             if (bullet) {
                 bullet.reset(this.shooter.x, this.shooter.y);
@@ -59,17 +59,17 @@ class StraightPattern {
 
 class StarPattern {
     constructor(game, bullets, shooter, interval, speed) {
-        this.straightPatterns = []
-        this.angles = [-60,-40,-20,0,20,40,60]
+        this.straightPatterns = [];
+        this.angles = [-60, -40, -20, 0, 20, 40, 60];
 
-        this.angles.forEach(function(angle) {
-            this.straightPatterns.push(new StraightPattern(game, bullets, shooter, interval, speed, angle))
-        },this);
+        this.angles.forEach(function (angle) {
+            this.straightPatterns.push(new StraightPattern(game, bullets, shooter, interval, speed, angle));
+        }, this);
     }
 
     update() {
-        this.straightPatterns.forEach(function(pattern) {
-            pattern.update()
+        this.straightPatterns.forEach(function (pattern) {
+            pattern.update();
         });
     }
 }
@@ -104,7 +104,7 @@ class RandomBulletEmitter {
 
             let angle = (Math.random()) * Math.PI;
 
-            let speed  = this.speed * (0.5 + 0.8 * Math.random());
+            let speed = this.speed * (0.5 + 0.8 * Math.random());
 
             let vx = Math.cos(angle) * speed;
             let vy = Math.sin(angle) * speed;
@@ -119,7 +119,7 @@ class RandomBulletEmitter {
                 this.ourBullets.push(bullet);
                 bullet.events.onKilled.add((b) => {
                     let index = this.ourBullets.indexOf(b);
-                    if (index > -1 ) {
+                    if (index > -1) {
                         this.ourBullets.splice(index, 1);
                     }
                 }
@@ -135,12 +135,11 @@ class RandomBulletEmitter {
 
             let vx = b.body.velocity.x;
             let vy = b.body.velocity.y;
-            let speed = Math.sqrt(vx*vx + vy*vy);
+            let speed = Math.sqrt(vx * vx + vy * vy);
             if (speed < this.bulletSpeedMin) {
                 b.body.velocity.x *= this.bulletSpeedMin / speed;
                 b.body.velocity.y *= this.bulletSpeedMin / speed;
             }
-
         }, this);
     }
 }
@@ -163,10 +162,10 @@ export default class PatternsLibrary {
         let amplitude = 200;
 
         bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets,
-                                                         this.owner,
-                                                         500, 50));
+            this.owner,
+            500, 50));
         bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, frequency, amplitude, interval));
-        bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 100000, 400,0));
+        bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 100000, 400, 0));
         bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 100000, 400));
 
         this.bulletPatterns = bulletPatternsArray;
@@ -179,6 +178,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[2];
+        return this.bulletPatterns[0];
     }
 }
