@@ -25,7 +25,7 @@ export default {
         darkGreen: '#264C47'
     },
     patterns: {
-        selected: 1,
+        selected: 2,
         randomBulletEmitter: {
             rate: 50,
             bulletSpeed: 500,
@@ -39,6 +39,11 @@ export default {
             bulletSpeed: 200,
             frequency: 0.4,
             interval: 25
+        },
+        starPattern: {
+            bulletSpeed: 400,
+            interval: 100,
+            angles: [-60, -40, -20, 0, 20, 40, 60]
         }
     }
 };
