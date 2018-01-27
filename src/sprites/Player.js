@@ -122,7 +122,7 @@ export default class extends Phaser.Sprite {
                     this.currentGear++;
                 }
             } else if (this.shiftDown.justDown) {
-                if (this.currentGear > 1 ) {
+                if (this.currentGear > 1) {
                     this.currentGear--;
                 }
             }

@@ -112,7 +112,7 @@ export default class extends Phaser.State {
                 config.worldBoundX + 10,
                 74 + (34 * i),
                 i + 1,
-                {font: "34px Arial", fill: "#fff"}
+                { font: '34px Arial', fill: '#fff' }
             );
         }
     }
@@ -126,7 +126,7 @@ export default class extends Phaser.State {
     update() {
         this.gearTexts.forEach(function (entry, i) {
             entry.alpha = 1;
-            if (i != this.player.currentGear -1) {
+            if (i !== this.player.currentGear - 1) {
                 entry.alpha = 0.6;
             }
         }, this);
