@@ -57,6 +57,23 @@ class StraightPattern {
     }
 }
 
+class StarPattern {
+    constructor(game, bullets, shooter, interval, speed) {
+        this.straightPatterns = []
+        this.angles = [-60,-40,-20,0,20,40,60]
+
+        this.angles.forEach(function(angle) {
+            this.straightPatterns.push(new StraightPattern(game, bullets, shooter, interval, speed, angle))
+        },this);
+    }
+
+    update() {
+        this.straightPatterns.forEach(function(pattern) {
+            pattern.update()
+        });
+    }
+}
+
 export default class PatternsLibrary {
     constructor(owner, game, bullets) {
         this.bulletPatterns = [];
@@ -77,6 +94,7 @@ export default class PatternsLibrary {
         console.log(this.game);
         bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, frequency, amplitude, interval));
         bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 100000, 400,0));
+        bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 100000, 400));
 
         this.bulletPatterns = bulletPatternsArray;
     }
@@ -88,6 +106,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[1];
+        return this.bulletPatterns[2];
     }
 }
