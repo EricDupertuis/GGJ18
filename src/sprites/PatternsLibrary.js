@@ -1,18 +1,18 @@
 class SinePattern {
-    constructor(game, bullets, shooter, frequency, amplitude, salveInterval) {
+    constructor(game, bullets, shooter, speed, frequency, salveInterval) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
         this.frequency = frequency;
         this.salveInterval = salveInterval;
-        this.amplitude = amplitude;
+        this.speed = speed;
         this.bulletTime = 0;
     }
 
     update() {
         let nowTime = this.game.time.now;
-        let vx = -Math.sin((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.amplitude;
-        let vy = Math.abs(Math.cos((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.amplitude);
+        let vx = -Math.sin((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.speed;
+        let vy = Math.abs(Math.cos((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.speed);
 
         if (this.game.time.now > this.bulletTime) {
             this.bulletTime = this.game.time.now + this.salveInterval;
@@ -28,12 +28,12 @@ class SinePattern {
 }
 
 class StraightPattern {
-    constructor(game, bullets, shooter, interval, speed, angle) {
+    constructor(game, bullets, shooter, speed, interval, angle) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
         this.speed = speed;
-        this.interval = interval / this.speed;
+        this.interval = 1000 * interval / this.speed;
         this.angle = angle * Math.PI / 180;
     }
     update() {
@@ -58,12 +58,12 @@ class StraightPattern {
 }
 
 class StarPattern {
-    constructor(game, bullets, shooter, interval, speed) {
+    constructor(game, bullets, shooter, speed, interval) {
         this.straightPatterns = [];
         this.angles = [-60, -40, -20, 0, 20, 40, 60];
 
         this.angles.forEach(function (angle) {
-            this.straightPatterns.push(new StraightPattern(game, bullets, shooter, interval, speed, angle));
+            this.straightPatterns.push(new StraightPattern(game, bullets, shooter, speed, interval, angle));
         }, this);
     }
 
@@ -159,14 +159,14 @@ export default class PatternsLibrary {
         /* Waves pattern */
         let interval = 100;
         let frequency = 0.4;
-        let amplitude = 200;
+        let speed = 200;
 
         bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets,
             this.owner,
             500, 50));
-        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, frequency, amplitude, interval));
-        bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 100000, 400, 0));
-        bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 100000, 400));
+        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, speed, frequency, interval));
+        bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 400, 100, 0));
+        bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 400, 100));
 
         this.bulletPatterns = bulletPatternsArray;
     }
@@ -178,6 +178,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[0];
+        return this.bulletPatterns[3];
     }
 }
