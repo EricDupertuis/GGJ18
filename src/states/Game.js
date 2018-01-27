@@ -120,7 +120,10 @@ export default class extends Phaser.State {
 
     render() {
         if (__DEV__) {
-            // this.game.debug.spriteInfo()
+            this.game.debug.body(this.player);
+            this.enemyBullets.forEach((b) => {
+                this.game.debug.body(b);
+            }, this);
         }
     }
 

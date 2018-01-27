@@ -1,21 +1,24 @@
+import config from '../config';
+
 class SinePattern {
-    constructor(game, bullets, shooter, speed, frequency, salveInterval) {
+    constructor(game, bullets, shooter) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
-        this.frequency = frequency;
-        this.salveInterval = salveInterval;
-        this.speed = speed;
         this.bulletTime = 0;
     }
 
     update() {
+        const f = config.patterns.sinePattern.frequency;
+        const speed = config.patterns.sinePattern.bulletSpeed;
+        const interval = config.patterns.sinePattern.interval;
+
         let nowTime = this.game.time.now;
-        let vx = -Math.sin((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.speed;
-        let vy = Math.abs(Math.cos((nowTime / 1000) * 2 * Math.PI * this.frequency) * this.speed);
+        let vx = -Math.sin((nowTime / 1000) * 2 * Math.PI * f) * speed;
+        let vy = Math.abs(Math.cos((nowTime / 1000) * 2 * Math.PI * f) * speed);
 
         if (this.game.time.now > this.bulletTime) {
-            this.bulletTime = this.game.time.now + this.salveInterval;
+            this.bulletTime = this.game.time.now + (1000 * interval / speed);
 
             let bullet = this.bullets.getFirstExists(false);
             if (bullet) {
@@ -42,7 +45,7 @@ class StraightPattern {
         }
 
         if (this.game.time.now > this.bulletTime) {
-            this.bulletTime = this.game.time.now + this.interval;
+            this.bulletTime = this.game.time.now + (1000 * this.interval / this.speed);
             let bullet = this.bullets.getFirstExists(false);
 
             let vx = Math.sin(this.angle) * this.speed;
@@ -58,11 +61,14 @@ class StraightPattern {
 }
 
 class StarPattern {
-    constructor(game, bullets, shooter, speed, interval) {
+    constructor(game, bullets, shooter) {
         this.straightPatterns = [];
-        this.angles = [-60, -40, -20, 0, 20, 40, 60];
 
-        this.angles.forEach(function (angle) {
+        const speed = config.patterns.starPattern.bulletSpeed;
+        const interval = config.patterns.starPattern.interval;
+        const angles = config.patterns.starPattern.angles;
+
+        angles.forEach(function (angle) {
             this.straightPatterns.push(new StraightPattern(game, bullets, shooter, speed, interval, angle));
         }, this);
     }
@@ -75,21 +81,12 @@ class StarPattern {
 }
 
 class RandomBulletEmitter {
-    constructor(game, bullets, shooter, speed, frequency) {
+    constructor(game, bullets, shooter) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
-        this.frequency = frequency;
-        this.speed = speed;
         this.previousTime = 0;
         this.ourBullets = [];
-
-        /* Bullet speed half time in second.
-         * e.g. 2 means that the bullet will half its speed in 2 seconds. */
-        this.bulletSpeedHalftime = 0.8;
-
-        /* Min bullet speed. */
-        this.bulletSpeedMin = 75;
     }
 
     update() {
@@ -99,12 +96,12 @@ class RandomBulletEmitter {
         /* Poisson distribution so that it is random but still interesting to
          * see. */
         let p = Math.random();
-        if (p < (1 - Math.exp(-this.frequency * dt))) {
+        if (p < (1 - Math.exp(-config.patterns.randomBulletEmitter.rate * dt))) {
             let bullet = this.bullets.getFirstExists(false);
 
             let angle = (Math.random()) * Math.PI;
 
-            let speed = this.speed * (0.5 + 0.8 * Math.random());
+            let speed = config.patterns.randomBulletEmitter.bulletSpeed * (0.5 + 0.8 * Math.random());
 
             let vx = Math.cos(angle) * speed;
             let vy = Math.sin(angle) * speed;
@@ -129,32 +126,27 @@ class RandomBulletEmitter {
 
         /* Decays the bullet speed */
         this.ourBullets.forEach((b) => {
-            let decay = Math.exp(dt * Math.log(0.5) / this.bulletSpeedHalftime);
+            let decay = Math.exp(dt * Math.log(0.5) / config.patterns.randomBulletEmitter.bulletSpeedHalftime);
             b.body.velocity.x *= decay;
             b.body.velocity.y *= decay;
 
             let vx = b.body.velocity.x;
             let vy = b.body.velocity.y;
             let speed = Math.sqrt(vx * vx + vy * vy);
-            if (speed < this.bulletSpeedMin) {
-                b.body.velocity.x *= this.bulletSpeedMin / speed;
-                b.body.velocity.y *= this.bulletSpeedMin / speed;
+            if (speed < config.patterns.randomBulletEmitter.bulletSpeedMin) {
+                b.body.velocity.x *= config.patterns.randomBulletEmitter.bulletSpeedMin / speed;
+                b.body.velocity.y *= config.patterns.randomBulletEmitter.bulletSpeedMin / speed;
             }
         }, this);
     }
 }
 
 class CrossAimPattern {
-    constructor(game, bullets, shooter, speed, frequency, player) {
+    constructor(game, bullets, shooter, player) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
         this.player = player;
-        this.frequency = frequency;
-        this.speed = speed;
-        this.interval = 1000 * frequency / this.speed;
-
-        this.cooldownTime = 1;
 
         this.stateChangeTime = 0;
 
@@ -163,8 +155,11 @@ class CrossAimPattern {
     }
 
     update() {
+        const interval = config.patterns.crossAimPattern.interval;
+        const speed = config.patterns.crossAimPattern.bulletSpeed;
+        const cooldown = config.patterns.crossAimPattern.cooldown;
         if (this.bulletTime === undefined) {
-            this.bulletTime = this.game.time.now + this.interval;
+            this.bulletTime = this.game.time.now + 1000 * interval / speed;
         }
 
         if (this.state === 'shooting') {
@@ -172,7 +167,7 @@ class CrossAimPattern {
                 this.shotsFired = 0;
                 this.state = 'cooldown';
                 // Parameter: time ?
-                this.stateChangeTime = this.cooldownTime * 1000 + this.game.time.now;
+                this.stateChangeTime = cooldown * 1000 + this.game.time.now;
             }
             if (this.game.time.now > this.bulletTime) {
                 if (this.playerX === undefined) {
@@ -180,7 +175,7 @@ class CrossAimPattern {
                     this.playerY = this.player.Y;
                 }
 
-                this.bulletTime = this.game.time.now + this.interval;
+                this.bulletTime = this.game.time.now + 1000 * interval / speed;
                 this.shotsFired++;
 
                 // Compute a unit vector perpendicular to the enemy - player one
@@ -204,8 +199,8 @@ class CrossAimPattern {
                         vx *= 1.1;
 
                         let norm = Math.sqrt(vx * vx + vy * vy);
-                        vx *= this.speed / norm;
-                        vy *= this.speed / norm;
+                        vx *= speed / norm;
+                        vy *= speed / norm;
 
                         bullet.reset(bulletX, bulletY);
                         bullet.body.velocity.x = vx;
@@ -281,18 +276,10 @@ export default class PatternsLibrary {
     loadPatterns() {
         let bulletPatternsArray = [];
 
-        /* Waves pattern */
-        let interval = 100;
-        let frequency = 0.4;
-        let speed = 200;
-
-        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets,
-            this.owner,
-            500, 50));
-        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, speed, frequency, interval));
-        bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 400, 100, 0));
-        bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 400, 100));
-        bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, 1000, 80, this.player));
+        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets));
+        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner));
+        bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner));
+        bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, this.player));
         bulletPatternsArray.push(new CrossEmitter(this.game, this.bullets, this.owner, 500, 80, 90));
 
         this.bulletPatterns = bulletPatternsArray;
@@ -305,6 +292,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[5];
+        return this.bulletPatterns[config.patterns.selected];
     }
 }
