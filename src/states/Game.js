@@ -1,7 +1,10 @@
 /* globals __DEV__ */
+import config from '../config';
+
 import Phaser from 'phaser';
 import Player from '../sprites/Player';
 import Enemy from '../sprites/Enemy';
+
 import { handleEnemyHit, handlePlayerHit, handleEnemyPlayerCollision } from '../utils/CollisionHandler';
 
 export default class extends Phaser.State {
@@ -13,9 +16,12 @@ export default class extends Phaser.State {
         this.explosions = null;
         this.background = null;
         this.score = 0;
-        this.scoreString = '';
+
+        this.scoreString = 'Score: ';
+        this.livesString = 'Lives: ';
         this.scoreText = null;
-        this.lives = null;
+        this.livesText = null;
+
         this.backgroundTween = null;
     }
 
@@ -25,6 +31,7 @@ export default class extends Phaser.State {
 
     create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.world.setBounds(0, 0, config.worldBoundX, config.worldBoundY);
 
         this.backgroundGroup = this.game.add.group();
 
@@ -65,6 +72,26 @@ export default class extends Phaser.State {
 
         this.game.add.existing(this.player);
         this.game.add.existing(this.enemy);
+
+        this.scoreText = this.game.add.text(
+            config.worldBoundX + 10,
+            10,
+            this.scoreString + this.score,
+            {
+                font: '34px Arial',
+                fill: '#fff'
+            }
+        );
+
+        this.livesText = this.game.add.text(
+            config.worldBoundX + 10,
+            44,
+            this.livesString + this.player.lives,
+            {
+                font: '34px Arial',
+                fill: '#fff'
+            }
+        );
     }
 
     render() {
@@ -74,8 +101,14 @@ export default class extends Phaser.State {
     }
 
     update() {
-        this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, null, this);
-        this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, null, this);
+        this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, () => {
+            this.score++;
+            this.scoreText.text = this.scoreString + this.score;
+        }, this);
+        this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, () => {
+            this.lives--;
+            this.livesText.text = this.livesString + this.player.lives;
+        }, this);
         this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
     }
 }
