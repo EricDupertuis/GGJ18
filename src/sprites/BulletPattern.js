@@ -1,6 +1,7 @@
 export default class BulletPattern {
-    constructor(name, frequency, amplitude, xVelocity, yVelocity) {
+    constructor(name, salveTime, frequency, amplitude, xVelocity, yVelocity) {
         this.name = name;
+        this.salveTime = salveTime
         this.frequency = frequency;
         this.amplitude = amplitude;
         this.xVelocity = xVelocity;
