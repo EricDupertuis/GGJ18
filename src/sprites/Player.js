@@ -83,21 +83,34 @@ export default class extends Phaser.Sprite {
         this.body.velocity.setTo(0, 0);
         this.moving = false;
 
-        // use gamepad input if disabled, defautls to cursors otherwise
+        // use gamepad input if disabled, defaults to cursors otherwise
+        // TODO, finish gamepad integration
         if (this.game.input.gamepad.supported && this.game.input.gamepad.active && this.pad.connected) {
-            if (this.pad.isDown(Phaser.Gamepad.XBOX360_LEFT_TRIGGER)) {
+            if (this.pad.isDown(Phaser.Gamepad.XBOX360_B)) {
                 this.fireBullet(null, 0, 'bullet');
             }
 
             var rightStickX = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X);
             var rightStickY = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y);
 
-            if (rightStickX) {
-                this.x += rightStickX * 10;
+            if (rightStickX !== 0) {
+                this.body.velocity.x = rightStickX * this.maxSpeed;
             }
 
-            if (rightStickY) {
-                this.y += rightStickY * 10;
+            if (rightStickY !== 0) {
+                this.body.velocity.y += rightStickY * this.maxSpeed;
+            }
+
+            if (this.pad.isDown(Phaser.Gamepad.XBOX360_LEFT_TRIGGER)) {
+                if (this.currentGear < config.speeds.numberOfGears) {
+                    this.currentGear++;
+                    this.maxSpeed = config.speeds.minSpeed * this.currentGear;
+                }
+            } else if (this.pad.isDown(Phaser.Gamepad.XBOX360_RIGHT_TRIGGER)) {
+                if (this.currentGear > 1) {
+                    this.currentGear--;
+                    this.maxSpeed = config.speeds.minSpeed * this.currentGear;
+                }
             }
         } else {
             if (this.cursors.left.isDown) {
