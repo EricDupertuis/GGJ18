@@ -14,7 +14,7 @@ export default class extends Phaser.Sprite {
         this.fired = false;
         this.alive = true;
 
-        this.patternsLibrary = new PatternsLibrary(this.game);
+        this.patternsLibrary = new PatternsLibrary(this, this.game, this.bullets);
         this.pattern = this.patternsLibrary.getPatternAtRandom();
 
         this.health = health;
@@ -22,18 +22,6 @@ export default class extends Phaser.Sprite {
 
     update() {
         if (this.alive) {
-            if (this.game.time.now > this.bulletTime) {
-                this.bulletTime = this.game.time.now + this.pattern.salveTime;
-                this.fired = true;
-
-                let bullet = this.bullets.getFirstExists(false);
-
-                if (bullet) {
-                    bullet.reset(this.x, this.y);
-                    bullet.body.velocity.x = this.pattern.xVelocity;
-                    bullet.body.velocity.y = this.pattern.yVelocity;
-                }
-            }
             this.patternsLibrary.updatePatterns();
         }
     }
