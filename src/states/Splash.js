@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { centerGameObjects } from '../utils';
+import config from '../config';
 
 export default class extends Phaser.State {
     init() { }
@@ -28,6 +29,10 @@ export default class extends Phaser.State {
     }
 
     create() {
-        this.state.start('Game');
+        if (config.showMenu) {
+            this.state.start('Menu');
+        } else {
+            this.state.start('Game');
+        }
     }
 }

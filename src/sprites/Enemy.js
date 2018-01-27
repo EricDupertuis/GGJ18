@@ -22,17 +22,40 @@ export default class extends Phaser.Sprite {
         this.health = config.enemyConfig.health;
 
         this.state = config.enemyConfig.startingState;
-        this.lastStateChange = 0;
+    }
+
+    changeState(state) {
+        this.state = state;
+        this.lastStateChange = this.game.time.now;
     }
 
     update() {
         const movementPeriod = config.enemyConfig.phase2.movementPeriod;
 
+        if (this.lastStateChange === undefined) {
+            this.lastStateChange = this.game.time.now;
+        }
+
         if (this.alive) {
             // TODO: Maybe move based on remaining life ?
             let targetX, targetY;
 
-            if (this.state === 'left') {
+            if (this.state === 'enter') {
+                const duration = config.enemyConfig.enterDuration * 1000;
+
+                if (this.game.time.now > this.lastStateChange + duration) {
+                    this.changeState('taunt');
+                }
+
+                targetY = 100 * ((this.game.time.now - this.lastStateChange) / duration);
+            } else if (this.state === 'taunt') {
+                const tauntDuration = config.enemyConfig.tauntDuration;
+                if (this.game.time.now > this.lastStateChange + tauntDuration * 1000) {
+                    this.changeState('left');
+                }
+                this.body.velocity.y = 0;
+                this.body.velocity.x = 0;
+            } else if (this.state === 'left') {
                 if (this.game.time.now > this.lastStateChange + movementPeriod * 1000) {
                     this.state = 'right';
                     this.lastStateChange = this.game.time.now;

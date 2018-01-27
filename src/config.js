@@ -4,10 +4,12 @@ export default {
     worldBoundX: 880,
     worldBoundY: 880,
     localStorageName: 'ggj18',
+    showMenu: false,
     speeds: {
         numberOfGears: 3,
         maxSpeed: 500,
-        minSpeed: 100
+        minSpeed: 100,
+        scoreMultipliers: [100, 1000, 2000]
     },
     gamepadConfig: {
 
@@ -23,8 +25,10 @@ export default {
         kp: 50,
         kd: 5,
 
-        startingState: 'right',
+        startingState: 'enter',
 
+        enterDuration: 3,
+        tauntDuration: 3,
         phase2: {
             leftPattern: 'random',
             rightPattern: 'aim+cross',
@@ -64,13 +68,13 @@ export default {
     patterns: {
         selected: 0,
         randomBulletEmitter: {
-            rate: 50,
+            rate: 40,
             bulletSpeed: 500,
 
             /* Bullet speed half time in second.
              * e.g. 2 means that the bullet will half its speed in 2 seconds. */
-            bulletSpeedHalftime: 0.8,
-            bulletSpeedMin: 130
+            bulletSpeedHalftime: 0.5,
+            bulletSpeedMin: 60
         },
         sinePattern: {
             bulletSpeed: 200,
@@ -85,11 +89,11 @@ export default {
         crossAimPattern: {
             bulletSpeed: 500,
             interval: 80,
-            cooldown: 1
+            cooldown: 2
         },
         crossEmitter: {
-            bulletSpeed: 300,
-            interval: 30,
+            bulletSpeed: 200,
+            interval: 50,
             rotationSpeed: 150,
             N: 4 /* number of beams */
         }
