@@ -22,7 +22,7 @@ export default class extends Phaser.Sprite {
 
     update() {
         if (this.alive) {
-            this.patternsLibrary.updatePatterns();
+            this.pattern.update();
         }
     }
 }
