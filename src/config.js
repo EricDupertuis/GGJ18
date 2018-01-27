@@ -27,6 +27,27 @@ export default {
         neonGreen: '#26FF5E',
         darkGreen: '#264C47'
     },
+    ui: {
+        textConfig: {
+            font: '32px Risque',
+            fill: '#fff',
+        },
+        texts: {
+            scoreText: {
+                text: 'Score: ',
+                y: 10
+            },
+            livesText: {
+                text: 'Lives: ',
+                y: 65
+            },
+            gearsText: {
+                text: 'Current gear: ',
+                y: 120,
+                spacing: 35
+            }
+        }
+    },
     patterns: {
         selected: 4,
         randomBulletEmitter: {

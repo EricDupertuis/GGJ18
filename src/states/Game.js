@@ -17,8 +17,9 @@ export default class extends Phaser.State {
         this.background = null;
         this.score = 0;
 
-        this.scoreString = 'Score: ';
-        this.livesString = 'Lives: ';
+        this.scoreString = config.ui.texts.scoreText.text;
+        this.livesString = config.ui.texts.livesText.text;
+        this.currentGearText = config.ui.texts.gearsText.text;
         this.scoreText = null;
         this.livesText = null;
         this.ui = null;
@@ -90,30 +91,31 @@ export default class extends Phaser.State {
 
         this.scoreText = this.game.add.text(
             config.worldBoundX + 10,
-            10,
+            config.ui.texts.scoreText.y,
             this.scoreString + this.score,
-            {
-                font: '34px Arial',
-                fill: '#fff'
-            }
+            config.ui.textConfig
         );
 
         this.livesText = this.game.add.text(
             config.worldBoundX + 10,
-            65,
+            config.ui.texts.livesText.y,
             this.livesString + this.player.lives,
-            {
-                font: '34px Arial',
-                fill: '#fff'
-            }
+            config.ui.textConfig
+        );
+
+        this.currentGearText = this.game.add.text(
+            config.worldBoundX + 10,
+            config.ui.texts.gearsText.y,
+            config.ui.texts.gearsText.text,
+            config.ui.textConfig
         );
 
         for (let i = 0; i < config.speeds.numberOfGears; i++) {
             this.gearTexts[i] = this.game.add.text(
-                config.worldBoundX + 10,
-                120 + (34 * i),
+                config.worldBoundX + 10 + (config.ui.texts.gearsText.spacing * i),
+                config.ui.texts.gearsText.y + 55,
                 i + 1,
-                { font: '34px Arial', fill: '#fff' }
+                config.ui.textConfig
             );
         }
     }
