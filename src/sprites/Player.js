@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import config from '../config';
 
 export default class extends Phaser.Sprite {
     constructor({ game, x, y, asset, bullets, lives = 5 }) {
@@ -9,13 +10,17 @@ export default class extends Phaser.Sprite {
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.collideWorldBounds = true;
 
-        this.bullets = bullets;
-        this.alive = true;
         this.moving = false;
-        this.maxSpeed = 500;
+        this.maxSpeed = config.speeds.maxSpeed;
+        this.currentGear = config.speeds.startGear;
+        this.shiftCooldown = 0;
+        
+        this.bullets = bullets;
         this.bulletTime = 0;
-        this.lives = lives;
         this.hitCooldown = 0;
+        
+        this.alive = true;
+        this.lives = lives;
 
         // TODO remove scaling when we have a proper sprite
         this.scale.setTo(0.5, 0.5);
@@ -24,8 +29,9 @@ export default class extends Phaser.Sprite {
         this.game.input.gamepad.start();
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
-        this.mainButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        this.secondButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        this.mainGunButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        this.shiftUp = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        this.shiftDown = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
     }
 
     update() {
@@ -107,9 +113,23 @@ export default class extends Phaser.Sprite {
                 this.body.velocity.y = this.maxSpeed;
             }
 
-            if (this.mainButton.isDown) {
+            if (this.mainGunButton.isDown) {
                 this.fireBullet(null, 0, 'bullet');
             }
-        }
+
+            if (this.shiftUp.isDown) {
+                if (this.game.time.now > this.shiftCooldown) {
+                    this.currentGear++;
+                    this.shiftCooldown = this.game.time.now + config.speeds.shiftCooldown;
+                }
+            }
+
+            if (this.shiftDown.isDown) {
+                if (this.game.time.now > this.shiftCooldown) {
+                    this.currentGear--;
+                    this.shiftCooldown = this.game.time.now + config.speeds.shiftCooldown;
+                }
+            }
+         }
     }
 }
