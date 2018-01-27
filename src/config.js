@@ -28,7 +28,7 @@ export default {
         darkGreen: '#264C47'
     },
     patterns: {
-        selected: 3,
+        selected: 4,
         randomBulletEmitter: {
             rate: 50,
             bulletSpeed: 500,
