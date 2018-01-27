@@ -90,21 +90,21 @@ export default class extends Phaser.State {
         this.ui = this.game.add.sprite(config.worldBoundX, 0, 'ui');
 
         this.scoreText = this.game.add.text(
-            config.worldBoundX + 10,
+            config.worldBoundX + config.ui.padding,
             config.ui.texts.scoreText.y,
             this.scoreString + this.score,
             config.ui.textConfig
         );
 
         this.livesText = this.game.add.text(
-            config.worldBoundX + 10,
+            config.worldBoundX + config.ui.padding,
             config.ui.texts.livesText.y,
             this.livesString + this.player.lives,
             config.ui.textConfig
         );
 
         this.currentGearText = this.game.add.text(
-            config.worldBoundX + 10,
+            config.worldBoundX + config.ui.padding,
             config.ui.texts.gearsText.y,
             config.ui.texts.gearsText.text,
             config.ui.textConfig
@@ -112,7 +112,7 @@ export default class extends Phaser.State {
 
         for (let i = 0; i < config.speeds.numberOfGears; i++) {
             this.gearTexts[i] = this.game.add.text(
-                config.worldBoundX + 10 + (config.ui.texts.gearsText.spacing * i),
+                config.worldBoundX + config.ui.padding + (config.ui.texts.gearsText.spacing * i),
                 config.ui.texts.gearsText.y + 55,
                 i + 1,
                 config.ui.textConfig
