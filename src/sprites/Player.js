@@ -1,27 +1,31 @@
 import Phaser from 'phaser';
 
 export default class extends Phaser.Sprite {
-    constructor({ game, x, y, asset, bullets }) {
+    constructor({ game, x, y, asset, bullets, lives = 5 }) {
         super(game, x, y, asset, bullets);
 
-        this.bullets = bullets;
         this.anchor.setTo(0.5);
         this.enableBody = true;
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.collideWorldBounds = true;
+
+        this.bullets = bullets;
         this.alive = true;
         this.moving = false;
         this.maxSpeed = 500;
         this.bulletTime = 0;
-        this.cursors = this.game.input.keyboard.createCursorKeys();
-        this.mainButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        this.secondButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        this.lives = lives;
+        this.hitCooldown = 0;
 
         // TODO remove scaling when we have a proper sprite
         this.scale.setTo(0.5, 0.5);
 
         this.pad = this.game.input.gamepad.pad1;
         this.game.input.gamepad.start();
+
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.mainButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        this.secondButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
     }
 
     update() {
@@ -41,10 +45,10 @@ export default class extends Phaser.Sprite {
             angle = angle * Math.PI / 180;
 
             let bullet = this.bullets.getFirstExists(false);
-    
+
             if (bullet) {
                 bullet.scale.setTo(1, 1);
-    
+
                 //  And fire it
                 bullet.reset(this.x, this.y + 8);
                 bullet.body.velocity.y -= Math.cos(angle) * 500;
@@ -52,7 +56,7 @@ export default class extends Phaser.Sprite {
                 bullet.fireTime = this.game.time.now;
                 bullet.bulletUpdate = update;
             }
-    
+
             this.bulletTime = this.game.time.now + 100;
         }
     }

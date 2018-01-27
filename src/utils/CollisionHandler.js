@@ -8,9 +8,19 @@ export const handleEnemyHit = (enemy, bullet) => {
     bullet.kill();
 };
 
-export const handlePlayerHit = (enemyBullet, player) => {
+export const handlePlayerHit = (player, enemyBullet) => {
+    if (player.game.time.now < player.hitCooldown) {
+        return;
+    }
+    
+    --player.lives;
+    
+    if (player.lives <= 0) {
+        player.kill();
+    }
+    
+    player.hitCooldown = player.game.time.now + 1000;
     enemyBullet.kill();
-    player.kill();
 };
 
 export const handleEnemyPlayerCollision = (enemy, player) => {
