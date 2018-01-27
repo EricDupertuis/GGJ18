@@ -22,8 +22,10 @@ export default class extends Phaser.Sprite {
         this.alive = true;
         this.lives = lives;
 
+        this.body.setSize(2, 3, 15, 9);
+
         // TODO remove scaling when we have a proper sprite
-        this.scale.setTo(0.5, 0.5);
+        this.scale.setTo(2, 2);
 
         this.pad = this.game.input.gamepad.pad1;
         this.game.input.gamepad.start();

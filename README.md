@@ -16,6 +16,10 @@ docker run -w /src -v $(pwd):/src node:9.4 npm install
 docker run -w /src -v $(pwd):/src -p 3000:3000 -p 3001:3001 node:9.4 npm run dev
 ```
 
+## Showing hitbox
+
+set the environment var `BUILD_DEV=true` when running webpack.
+
 
 
 You'll need to install a few things before you have a working copy of the project.
