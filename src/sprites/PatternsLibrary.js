@@ -1,5 +1,3 @@
-import BulletPattern from './bulletPattern';
-
 class SinePattern {
     constructor(game, bullets, shooter, frequency, amplitude, salveInterval) {
         this.game = game;
@@ -31,53 +29,35 @@ class SinePattern {
 }
 
 export default class PatternsLibrary {
-  constructor(owner, game, bullets) {
-      this.bulletPatterns = [];
-      this.game = game;
-      this.bullets = bullets;
-      this.owner = owner;
-      this.loadPatterns();
-  }
+    constructor(owner, game, bullets) {
+        this.bulletPatterns = [];
+        this.game = game;
+        this.bullets = bullets;
+        this.owner = owner;
+        this.loadPatterns();
+    }
 
-  loadPatterns() {
-      let bulletPatternsArray = [];
+    loadPatterns() {
+        let bulletPatternsArray = [];
 
-      /*Waves pattern*/
-      let patternName = 'waves';
-      let interval = 100;
-      let frequency = 0.4;
-      let amplitude = 200;
-      let xVelocity = -Math.sin((this.game.time.now / 1000) * 2 * Math.PI * frequency) * amplitude;
-      let yVelocity = Math.abs(Math.cos((this.game.time.now / 1000) * 2 * Math.PI * frequency) * amplitude);
+        /* Waves pattern */
+        let interval = 100;
+        let frequency = 0.4;
+        let amplitude = 200;
 
-      console.log(this.game);
-      bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, frequency, amplitude, interval));
+        console.log(this.game);
+        bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, frequency, amplitude, interval));
 
-      /*Straight line pattern*/
-      /*j
-      patternName = 'straightLine';
-      salveTime = 100;
-      frequency = 0.4;
-      amplitude = 400;
-      xVelocity = 0;
-      yVelocity = 250;
-      bulletPatternsArray.push(new BulletPattern(patternName, salveTime, frequency, amplitude, xVelocity, yVelocity ));
-      */
+        this.bulletPatterns = bulletPatternsArray;
+    }
 
-      this.bulletPatterns = bulletPatternsArray;
-  }
+    updatePatterns() {
+        this.bulletPatterns.forEach(function (bulletPattern) {
+            bulletPattern.update();
+        });
+    }
 
-  updatePatterns(){
-      let nowTime = this.game.time.now
-      this.bulletPatterns.forEach(function(bulletPattern){
-          bulletPattern.update();
-      });
-
-  }
-
-  getPatternAtRandom(){
-      let randomNumber = Math.round(Math.random());
-
-      return this.bulletPatterns[0];
-  }
+    getPatternAtRandom() {
+        return this.bulletPatterns[0];
+    }
 }
