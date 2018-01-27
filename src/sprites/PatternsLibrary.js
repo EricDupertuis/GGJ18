@@ -144,12 +144,92 @@ class RandomBulletEmitter {
     }
 }
 
+class CrossAimPattern {
+    constructor(game, bullets, shooter, speed, frequency, player) {
+        this.game = game;
+        this.bullets = bullets;
+        this.shooter = shooter;
+        this.player = player;
+        this.frequency = frequency;
+        this.speed = speed;
+        this.interval = 1000 * frequency / this.speed;
+
+        this.cooldownTime = 1;
+
+        this.stateChangeTime = 0;
+
+        this.state = 'shooting';
+        this.shotsFired = 0;
+    }
+
+    update() {
+        if (this.bulletTime === undefined) {
+            this.bulletTime = this.game.time.now + this.interval;
+        }
+
+        if (this.state === 'shooting') {
+            if (this.shotsFired >= 4) {
+                this.shotsFired = 0;
+                this.state = 'cooldown';
+                // Parameter: time ?
+                this.stateChangeTime = this.cooldownTime * 1000 + this.game.time.now;
+            }
+            if (this.game.time.now > this.bulletTime) {
+                if (this.playerX === undefined) {
+                    this.playerX = this.player.x;
+                    this.playerY = this.player.Y;
+                }
+
+                this.bulletTime = this.game.time.now + this.interval;
+                this.shotsFired++;
+
+                // Compute a unit vector perpendicular to the enemy - player one
+                let dx = this.shooter.y - this.player.y;
+                let dy = -this.shooter.x + this.player.x;
+
+                let norm = Math.sqrt(dx * dx + dy * dy);
+                dx /= norm;
+                dy /= norm;
+
+                for (let i = -2; i <= 2; i++) {
+                    let bullet = this.bullets.getFirstExists(false);
+                    if (bullet) {
+                        const spread = 75;
+                        let bulletX = this.shooter.x + i * spread * dx;
+                        let bulletY = this.shooter.y + i * spread * dy;
+
+                        let vx = this.player.x - bulletX;
+                        let vy = this.player.y - bulletY;
+
+                        vx *= 1.1;
+
+                        let norm = Math.sqrt(vx * vx + vy * vy);
+                        vx *= this.speed / norm;
+                        vy *= this.speed / norm;
+
+                        bullet.reset(bulletX, bulletY);
+                        bullet.body.velocity.x = vx;
+                        bullet.body.velocity.y = vy;
+                    }
+                }
+            }
+        } else if (this.state === 'cooldown') {
+            this.playerX = undefined;
+            this.playerY = undefined;
+            if (this.game.time.now > this.stateChangeTime) {
+                this.state = 'shooting';
+            }
+        }
+    }
+}
+
 export default class PatternsLibrary {
-    constructor(owner, game, bullets) {
+    constructor(owner, game, bullets, player) {
         this.bulletPatterns = [];
         this.game = game;
         this.bullets = bullets;
         this.owner = owner;
+        this.player = player;
         this.loadPatterns();
     }
 
@@ -167,6 +247,7 @@ export default class PatternsLibrary {
         bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, speed, frequency, interval));
         bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 400, 100, 0));
         bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 400, 100));
+        bulletPatternsArray.push(new CrossAimPattern(this.game, this.bullets, this.owner, 1000, 80, this.player));
 
         this.bulletPatterns = bulletPatternsArray;
     }
@@ -178,6 +259,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[3];
+        return this.bulletPatterns[4];
     }
 }
