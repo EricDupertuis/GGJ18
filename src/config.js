@@ -40,7 +40,7 @@ export default {
         padding: 20,
         textConfig: {
             font: '32px Risque',
-            fill: '#fff',
+            fill: '#fff'
         },
         texts: {
             scoreText: {
