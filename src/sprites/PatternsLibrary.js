@@ -1,3 +1,5 @@
+import config from '../config';
+
 class SinePattern {
     constructor(game, bullets, shooter, speed, frequency, salveInterval) {
         this.game = game;
@@ -83,13 +85,6 @@ class RandomBulletEmitter {
         this.speed = speed;
         this.previousTime = 0;
         this.ourBullets = [];
-
-        /* Bullet speed half time in second.
-         * e.g. 2 means that the bullet will half its speed in 2 seconds. */
-        this.bulletSpeedHalftime = 0.8;
-
-        /* Min bullet speed. */
-        this.bulletSpeedMin = 75;
     }
 
     update() {
@@ -99,12 +94,12 @@ class RandomBulletEmitter {
         /* Poisson distribution so that it is random but still interesting to
          * see. */
         let p = Math.random();
-        if (p < (1 - Math.exp(-this.frequency * dt))) {
+        if (p < (1 - Math.exp(-config.patterns.randomBulletEmitter.rate * dt))) {
             let bullet = this.bullets.getFirstExists(false);
 
             let angle = (Math.random()) * Math.PI;
 
-            let speed = this.speed * (0.5 + 0.8 * Math.random());
+            let speed = config.patterns.randomBulletEmitter.bulletSpeed * (0.5 + 0.8 * Math.random());
 
             let vx = Math.cos(angle) * speed;
             let vy = Math.sin(angle) * speed;
@@ -129,16 +124,16 @@ class RandomBulletEmitter {
 
         /* Decays the bullet speed */
         this.ourBullets.forEach((b) => {
-            let decay = Math.exp(dt * Math.log(0.5) / this.bulletSpeedHalftime);
+            let decay = Math.exp(dt * Math.log(0.5) / config.patterns.randomBulletEmitter.bulletSpeedHalftime);
             b.body.velocity.x *= decay;
             b.body.velocity.y *= decay;
 
             let vx = b.body.velocity.x;
             let vy = b.body.velocity.y;
             let speed = Math.sqrt(vx * vx + vy * vy);
-            if (speed < this.bulletSpeedMin) {
-                b.body.velocity.x *= this.bulletSpeedMin / speed;
-                b.body.velocity.y *= this.bulletSpeedMin / speed;
+            if (speed < config.patterns.randomBulletEmitter.bulletSpeedMin) {
+                b.body.velocity.x *= config.patterns.randomBulletEmitter.bulletSpeedMin / speed;
+                b.body.velocity.y *= config.patterns.randomBulletEmitter.bulletSpeedMin / speed;
             }
         }, this);
     }
@@ -305,6 +300,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[5];
+        return this.bulletPatterns[config.patterns.selected];
     }
 }
