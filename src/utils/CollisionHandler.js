@@ -1,3 +1,5 @@
+import config from "../config";
+
 export const handleEnemyHit = (enemy, bullet) => {
     --enemy.health;
 
@@ -19,7 +21,7 @@ export const handlePlayerHit = (player, enemyBullet) => {
         player.kill();
     }
 
-    player.hitCooldown = player.game.time.now + 1000;
+    player.hitCooldown = player.game.time.now + config.playerConfig.hitCooldown;
     enemyBullet.kill();
 };
 
