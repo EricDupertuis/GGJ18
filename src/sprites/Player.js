@@ -32,67 +32,69 @@ export default class extends Phaser.Sprite {
         }, this);
 
         if (this.alive) {
-            //  Reset the player, then check for movement keys
-            this.body.velocity.setTo(0, 0);
-            this.moving = false;
-
-            if (this.game.input.gamepad.supported && this.game.input.gamepad.active && this.pad.connected) {
-                if (this.pad.isDown(Phaser.Gamepad.XBOX360_LEFT_TRIGGER)) {
-                    if (this.game.time.now > this.bulletTime) {
-                        this.fireBullet(null, 0, 'bullet');
-                        this.bulletTime = this.game.time.now + 100;
-                        console.log(this.bullets.length);
-                    }
-                }
-
-                var rightStickX = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X);
-                var rightStickY = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y);
-
-                if (rightStickX) {
-                    this.x += rightStickX * 10;
-                }
-
-                if (rightStickY) {
-                    this.y += rightStickY * 10;
-                }
-            } else {
-                if (this.cursors.left.isDown) {
-                    this.body.velocity.x = -this.maxSpeed;
-                } else if (this.cursors.right.isDown) {
-                    this.moving = true;
-                    this.body.velocity.x = this.maxSpeed;
-                }
-
-                if (this.cursors.up.isDown) {
-                    this.body.velocity.y = -this.maxSpeed;
-                } else if (this.cursors.down.isDown) {
-                    this.body.velocity.y = this.maxSpeed;
-                }
-
-                if (this.mainButton.isDown) {
-                    if (this.game.time.now > this.bulletTime) {
-                        this.fireBullet(null, 0, 'bullet');
-                        this.bulletTime = this.game.time.now + 100;
-                    }
-                }
-            }
+            this.handleControls();
         }
     }
 
     fireBullet(update, angle = 0, animation = null) {
-        angle = angle * Math.PI / 180;
+        if (this.game.time.now > this.bulletTime) {
+            angle = angle * Math.PI / 180;
 
-        let bullet = this.bullets.getFirstExists(false);
+            let bullet = this.bullets.getFirstExists(false);
+    
+            if (bullet) {
+                bullet.scale.setTo(1, 1);
+    
+                //  And fire it
+                bullet.reset(this.x, this.y + 8);
+                bullet.body.velocity.y -= Math.cos(angle) * 500;
+                bullet.body.velocity.x += Math.sin(angle) * 100;
+                bullet.fireTime = this.game.time.now;
+                bullet.bulletUpdate = update;
+            }
+    
+            this.bulletTime = this.game.time.now + 100;
+        }
+    }
 
-        if (bullet) {
-            bullet.scale.setTo(1, 1);
+    handleControls() {
+        //  Reset the player, then check for movement keys
+        this.body.velocity.setTo(0, 0);
+        this.moving = false;
 
-            //  And fire it
-            bullet.reset(this.x, this.y + 8);
-            bullet.body.velocity.y -= Math.cos(angle) * 500;
-            bullet.body.velocity.x += Math.sin(angle) * 100;
-            bullet.fireTime = this.game.time.now;
-            bullet.bulletUpdate = update;
+        // use gamepad input if disabled, defautls to cursors otherwise
+        if (this.game.input.gamepad.supported && this.game.input.gamepad.active && this.pad.connected) {
+            if (this.pad.isDown(Phaser.Gamepad.XBOX360_LEFT_TRIGGER)) {
+                this.fireBullet(null, 0, 'bullet');
+            }
+
+            var rightStickX = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X);
+            var rightStickY = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y);
+
+            if (rightStickX) {
+                this.x += rightStickX * 10;
+            }
+
+            if (rightStickY) {
+                this.y += rightStickY * 10;
+            }
+        } else {
+            if (this.cursors.left.isDown) {
+                this.body.velocity.x = -this.maxSpeed;
+            } else if (this.cursors.right.isDown) {
+                this.moving = true;
+                this.body.velocity.x = this.maxSpeed;
+            }
+
+            if (this.cursors.up.isDown) {
+                this.body.velocity.y = -this.maxSpeed;
+            } else if (this.cursors.down.isDown) {
+                this.body.velocity.y = this.maxSpeed;
+            }
+
+            if (this.mainButton.isDown) {
+                this.fireBullet(null, 0, 'bullet');
+            }
         }
     }
 }
