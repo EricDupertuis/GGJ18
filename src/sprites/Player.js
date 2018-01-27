@@ -23,7 +23,7 @@ export default class extends Phaser.Sprite {
         this.alive = true;
         this.lives = 5;
 
-        this.body.setSize(2, 3, 15, 9);
+        this.body.setSize(2, 3, 15, 11);
 
         // TODO remove scaling when we have a proper sprite
         this.scale.setTo(2, 2);
@@ -33,8 +33,8 @@ export default class extends Phaser.Sprite {
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.mainGunButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        this.shiftUp = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        this.shiftDown = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        this.shiftUp = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        this.shiftDown = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
         this.animations.add('player', null, 20, true, true);
     }
 
