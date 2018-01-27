@@ -74,6 +74,77 @@ class StarPattern {
     }
 }
 
+class RandomBulletEmitter {
+    constructor(game, bullets, shooter, speed, frequency) {
+        this.game = game;
+        this.bullets = bullets;
+        this.shooter = shooter;
+        this.frequency = frequency;
+        this.speed = speed;
+        this.previousTime = 0;
+        this.ourBullets = [];
+
+        /* Bullet speed half time in second.
+         * e.g. 2 means that the bullet will half its speed in 2 seconds. */
+        this.bulletSpeedHalftime = 0.8;
+
+        /* Min bullet speed. */
+        this.bulletSpeedMin = 75;
+    }
+
+    update() {
+        let dt = (this.game.time.now - this.previousTime) / 1000;
+        this.previousTime = this.game.time.now;
+
+        /* Poisson distribution so that it is random but still interesting to
+         * see. */
+        let p = Math.random();
+        if (p < (1 - Math.exp(-this.frequency * dt))) {
+            let bullet = this.bullets.getFirstExists(false);
+
+            let angle = (Math.random()) * Math.PI;
+
+            let speed  = this.speed * (0.5 + 0.8 * Math.random());
+
+            let vx = Math.cos(angle) * speed;
+            let vy = Math.sin(angle) * speed;
+
+            if (bullet) {
+                bullet.reset(this.shooter.x, this.shooter.y);
+                bullet.body.velocity.x = vx;
+                bullet.body.velocity.y = vy;
+
+                /* Store the bullet as part of our group, but free it on death.
+                 * This is useful to apply behaviour to bullets (see below). */
+                this.ourBullets.push(bullet);
+                bullet.events.onKilled.add((b) => {
+                    let index = this.ourBullets.indexOf(b);
+                    if (index > -1 ) {
+                        this.ourBullets.splice(index, 1);
+                    }
+                }
+                );
+            }
+        }
+
+        /* Decays the bullet speed */
+        this.ourBullets.forEach((b) => {
+            let decay = Math.exp(dt * Math.log(0.5) / this.bulletSpeedHalftime);
+            b.body.velocity.x *= decay;
+            b.body.velocity.y *= decay;
+
+            let vx = b.body.velocity.x;
+            let vy = b.body.velocity.y;
+            let speed = Math.sqrt(vx*vx + vy*vy);
+            if (speed < this.bulletSpeedMin) {
+                b.body.velocity.x *= this.bulletSpeedMin / speed;
+                b.body.velocity.y *= this.bulletSpeedMin / speed;
+            }
+
+        }, this);
+    }
+}
+
 export default class PatternsLibrary {
     constructor(owner, game, bullets) {
         this.bulletPatterns = [];
@@ -91,7 +162,9 @@ export default class PatternsLibrary {
         let frequency = 0.4;
         let amplitude = 200;
 
-        console.log(this.game);
+        bulletPatternsArray.push(new RandomBulletEmitter(this.game, this.bullets,
+                                                         this.owner,
+                                                         500, 50));
         bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, frequency, amplitude, interval));
         bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 100000, 400,0));
         bulletPatternsArray.push(new StarPattern(this.game, this.bullets, this.owner, 100000, 400));
