@@ -15,7 +15,7 @@ export default {
 
     },
     playerConfig: {
-
+        hitCooldown: 3000
     },
     enemyConfig: {
         health: 1000,

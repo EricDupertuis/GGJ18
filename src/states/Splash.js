@@ -25,6 +25,7 @@ export default class extends Phaser.State {
         this.game.load.atlas('player', 'assets/spritesheets/player.png', 'assets/spritesheets/player.json');
         this.game.load.atlas('redBullet', 'assets/spritesheets/redBullet.png', 'assets/spritesheets/redBullet.json');
         this.game.load.atlas('blueExplosion1', 'assets/spritesheets/blueExplosion1.png', 'assets/spritesheets/blueExplosion1.json');
+        this.game.load.atlas('redExplosion1', 'assets/spritesheets/redExplosion1.png', 'assets/spritesheets/redExplosion1.json');
     }
 
     create() {
