@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "explosion2_Animation 1_0.png",
+	"filename": "redExplosion1.png",
 	"frame": {"x":0,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "explosion2_Animation 1_1.png",
+	"filename": "redExplosion2.png",
 	"frame": {"x":32,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "explosion2_Animation 1_2.png",
+	"filename": "redExplosion3.png",
 	"frame": {"x":64,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "explosion2_Animation 1_3.png",
+	"filename": "redExplosion4.png",
 	"frame": {"x":96,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "explosion2_Animation 1_4.png",
+	"filename": "redExplosion5.png",
 	"frame": {"x":128,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "explosion2_Animation 1_5.png",
+	"filename": "redExplosion6.png",
 	"frame": {"x":160,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -49,7 +49,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "explosion2_Animation 1_6.png",
+	"filename": "redExplosion7.png",
 	"frame": {"x":192,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -57,7 +57,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "explosion2_Animation 1_7.png",
+	"filename": "redExplosion8.png",
 	"frame": {"x":224,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,

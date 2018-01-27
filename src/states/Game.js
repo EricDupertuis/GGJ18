@@ -61,8 +61,8 @@ export default class extends Phaser.State {
         this.enemyBullets.setAll('checkWorldBounds', true);
 
         //  That's one explosive group you got there sir
-        this.blueExplosions = this.game.add.group();
-        this.blueExplosions.createMultiple(50, 'blueExplosion1');
+        this.explosions = this.game.add.group();
+        this.explosions.createMultiple(50, 'blueExplosion1');
 
         this.rightPanel = new Phaser.Graphics(
             this.game,
@@ -76,7 +76,7 @@ export default class extends Phaser.State {
             y: 600,
             asset: 'player',
             bullets: this.bullets,
-            explosions: this.blueExplosions
+            explosions: this.explosions
         });
 
         this.enemy = new Enemy({
@@ -86,7 +86,7 @@ export default class extends Phaser.State {
             y: 100,
             asset: 'enemy',
             enemyBullets: this.enemyBullets,
-            explosions: this.blueExplosions
+            explosions: this.explosions
         });
 
         // TODO: Change when we get a real asset
@@ -136,7 +136,7 @@ export default class extends Phaser.State {
             }, this);
         }
 
-        this.world.bringToTop(this.blueExplosions);
+        this.world.bringToTop(this.explosions);
     }
 
     update() {
