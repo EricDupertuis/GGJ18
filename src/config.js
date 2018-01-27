@@ -13,7 +13,7 @@ export default {
 
     },
     playerConfig: {
-
+        hitCooldown: 3000
     },
     enemyConfig: {
         health: 1000,
@@ -83,7 +83,7 @@ export default {
             angles: [-60, -40, -20, 0, 20, 40, 60]
         },
         crossAimPattern: {
-            bulletSpeed: 700,
+            bulletSpeed: 500,
             interval: 80,
             cooldown: 1
         },
