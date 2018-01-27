@@ -21,6 +21,7 @@ export default class extends Phaser.State {
         this.livesString = 'Lives: ';
         this.scoreText = null;
         this.livesText = null;
+        this.ui = null;
 
         this.backgroundTween = null;
     }
@@ -54,6 +55,12 @@ export default class extends Phaser.State {
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
 
+        this.rightPanel = new Phaser.Graphics(
+            this.game,
+            config.worldBoundX,
+            0
+        );
+
         this.player = new Player({
             game: this.game,
             x: this.world.centerX,
@@ -72,6 +79,8 @@ export default class extends Phaser.State {
 
         this.game.add.existing(this.player);
         this.game.add.existing(this.enemy);
+
+        this.ui = this.game.add.sprite(config.worldBoundX, 0, 'ui');
 
         this.scoreText = this.game.add.text(
             config.worldBoundX + 10,
