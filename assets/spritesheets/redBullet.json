@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "1.png",
+	"filename": "redBullet1.png",
 	"frame": {"x":0,"y":0,"w":11,"h":8},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":11,"h":8}
 },
 {
-	"filename": "2.png",
+	"filename": "redBullet2.png",
 	"frame": {"x":11,"y":0,"w":15,"h":9},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":15,"h":9}
 },
 {
-	"filename": "3.png",
+	"filename": "redBullet3.png",
 	"frame": {"x":26,"y":0,"w":18,"h":9},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":18,"h":9}
 },
 {
-	"filename": "4.png",
+	"filename": "redBullet4.png",
 	"frame": {"x":44,"y":0,"w":20,"h":10},
 	"rotated": false,
 	"trimmed": false,
