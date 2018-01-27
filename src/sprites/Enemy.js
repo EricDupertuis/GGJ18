@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import PatternsLibrary from './PatternsLibrary';
 
 export default class extends Phaser.Sprite {
     constructor({ game, x, y, asset, enemyBullets, health = 50 }) {
@@ -13,8 +14,8 @@ export default class extends Phaser.Sprite {
         this.fired = false;
         this.alive = true;
 
-        this.freq = 0.4;
-        this.amplitude = 200;
+        this.PatternsLibrary = new PatternsLibrary(this);
+        this.pattern = this.PatternsLibrary.getPatternAtRandom();
 
         this.health = health;
     }
@@ -29,8 +30,8 @@ export default class extends Phaser.Sprite {
 
                 if (bullet) {
                     bullet.reset(this.x, this.y);
-                    bullet.body.velocity.x = -Math.sin((this.game.time.now / 1000) * 2 * Math.PI * this.freq) * this.amplitude;
-                    bullet.body.velocity.y = Math.abs(Math.cos((this.game.time.now / 1000) * 2 * Math.PI * this.freq) * this.amplitude);
+                    bullet.body.velocity.x = this.pattern.xVelocity;
+                    bullet.body.velocity.y = this.pattern.yVelocity;
                 }
             }
         }
