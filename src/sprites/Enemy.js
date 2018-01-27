@@ -3,7 +3,7 @@ import PatternsLibrary from './PatternsLibrary';
 import config from '../config';
 
 export default class extends Phaser.Sprite {
-    constructor({ game, player, x, y, asset, enemyBullets }) {
+    constructor({ game, player, x, y, asset, enemyBullets, explosions }) {
         super(game, x, y, asset);
         this.anchor.setTo(0.5);
         this.enableBody = true;
@@ -15,6 +15,7 @@ export default class extends Phaser.Sprite {
         this.fired = false;
         this.alive = true;
         this.player = player;
+        this.explosions = explosions;
 
         this.patternsLibrary = new PatternsLibrary(this, this.game, this.bullets, this.player);
         this.pattern = this.patternsLibrary.getPatternAtRandom();

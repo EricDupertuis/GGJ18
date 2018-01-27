@@ -62,7 +62,7 @@ export default class extends Phaser.State {
 
         //  That's one explosive group you got there sir
         this.blueExplosions = this.game.add.group();
-        this.blueExplosions.createMultiple(50, 'blueExplosion');
+        this.blueExplosions.createMultiple(50, 'blueExplosion1');
 
         this.rightPanel = new Phaser.Graphics(
             this.game,
@@ -75,7 +75,8 @@ export default class extends Phaser.State {
             x: this.world.centerX,
             y: 600,
             asset: 'player',
-            bullets: this.bullets
+            bullets: this.bullets,
+            explosions: this.blueExplosions
         });
 
         this.enemy = new Enemy({
@@ -84,7 +85,8 @@ export default class extends Phaser.State {
             x: this.world.centerX,
             y: 100,
             asset: 'enemy',
-            enemyBullets: this.enemyBullets
+            enemyBullets: this.enemyBullets,
+            explosions: this.blueExplosions
         });
 
         // TODO: Change when we get a real asset
@@ -133,6 +135,8 @@ export default class extends Phaser.State {
                 this.game.debug.body(b);
             }, this);
         }
+
+        this.world.bringToTop(this.blueExplosions);
     }
 
     update() {
@@ -146,10 +150,33 @@ export default class extends Phaser.State {
         this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, () => {
             this.score++;
             this.scoreText.text = this.scoreString + this.score;
+
+            let explosion = this.enemy.explosions.getFirstExists(false);
+            explosion.scale.setTo(1, 1);
+            explosion.animations.add('blueExplosion1');
+
+            explosion.reset(
+                this.enemy.body.x + (Math.floor(Math.random() * this.enemy.width) + 1),
+                this.enemy.body.y + (Math.floor(Math.random() * this.enemy.height) + 1)
+            );
+            explosion.play('blueExplosion1', 30, false, true);
         }, this);
+
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, () => {
             this.livesText.text = this.livesString + (this.player.lives - 1);
+
+            if (this.player.game.time.now > this.player.hitCooldown) {
+                let explosion = this.player.explosions.getFirstExists(false);
+                explosion.animations.add('blueExplosion1');
+
+                explosion.reset(
+                    this.player.body.x,
+                    this.player.body.y
+                );
+                explosion.play('blueExplosion1', 30, false, true);
+            }
         }, this);
+
         this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
     }
 }

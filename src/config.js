@@ -5,10 +5,9 @@ export default {
     worldBoundY: 880,
     localStorageName: 'ggj18',
     speeds: {
-        numberOfGears: 5,
+        numberOfGears: 3,
         maxSpeed: 500,
-        minSpeed: 100,
-        startGear: 5
+        minSpeed: 100
     },
     gamepadConfig: {
 
