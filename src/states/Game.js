@@ -78,9 +78,4 @@ export default class extends Phaser.State {
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, null, this);
         this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
     }
-
-    resetBullet(bullet) {
-        //  Called if the bullet goes out of the screen
-        bullet.kill();
-    }
 }

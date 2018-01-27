@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 export default class extends Phaser.Sprite {
-    constructor({ game, x, y, asset, enemyBullets }) {
+    constructor({ game, x, y, asset, enemyBullets, health = 50 }) {
         super(game, x, y, asset);
         this.anchor.setTo(0.5);
         this.enableBody = true;
@@ -15,6 +15,8 @@ export default class extends Phaser.Sprite {
 
         this.freq = 0.4;
         this.amplitude = 200;
+
+        this.health = health;
     }
 
     update() {

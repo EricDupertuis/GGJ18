@@ -1,6 +1,11 @@
-export const handleEnemyHit = (bullet, enemy) => {
+export const handleEnemyHit = (enemy, bullet) => {
+    --enemy.health;
+
+    if (enemy.health <= 0) {
+        enemy.kill();
+    }
+
     bullet.kill();
-    enemy.kill();
 };
 
 export const handlePlayerHit = (enemyBullet, player) => {
