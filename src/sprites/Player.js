@@ -54,7 +54,11 @@ export default class extends Phaser.Sprite {
             let bullet = this.bullets.getFirstExists(false);
 
             if (bullet) {
-                bullet.scale.setTo(1, 1);
+                bullet.scale.setTo(2, 2);
+                bullet.angle = -90;
+
+                bullet.animations.add('redBullet', null, 10, true, true);
+                bullet.animations.play('redBullet');
 
                 //  And fire it
                 bullet.reset(this.x, this.y + 8);

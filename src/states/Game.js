@@ -39,7 +39,7 @@ export default class extends Phaser.State {
         //  Our bullet group
         this.bullets = this.game.add.group();
         this.bullets.enableBody = true;
-        this.bullets.createMultiple(300, 'bullet');
+        this.bullets.createMultiple(300, 'redBullet');
         this.bullets.setAll('anchor.x', 0.5);
         this.bullets.setAll('anchor.y', 1);
         this.bullets.setAll('outOfBoundsKill', true);
@@ -49,7 +49,10 @@ export default class extends Phaser.State {
         let enemyBullets = this.game.add.group();
         this.enemyBullets = this.backgroundGroup.add(enemyBullets);
         this.enemyBullets.enableBody = true;
-        this.enemyBullets.createMultiple(300, 'enemyBullet');
+        this.enemyBullets.createMultiple(300, 'gearBullet');
+        this.enemyBullets.setAll('scale.x', 0.25);
+        this.enemyBullets.setAll('scale.y', 0.25);
+        this.enemyBullets.setAll('tint', config.colorPalette.avocadoGreen);
         this.enemyBullets.setAll('anchor.x', 0.5);
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
@@ -76,7 +79,8 @@ export default class extends Phaser.State {
             asset: 'enemy',
             enemyBullets: this.enemyBullets
         });
-
+        
+        this.enemy.tint=config.colorPalette.neonGreen;
         this.game.add.existing(this.player);
         this.game.add.existing(this.enemy);
 
