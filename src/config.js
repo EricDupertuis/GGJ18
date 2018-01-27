@@ -24,8 +24,10 @@ export default {
         kp: 50,
         kd: 5,
 
-        startingState: 'right',
+        startingState: 'enter',
 
+        enterDuration: 3,
+        tauntDuration: 3,
         phase2: {
             leftPattern: 'random',
             rightPattern: 'aim+cross',
