@@ -28,12 +28,13 @@ class SinePattern {
 }
 
 class StraightPattern {
-    constructor(game, bullets, shooter, interval, speed) {
+    constructor(game, bullets, shooter, interval, speed, angle) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
         this.speed = speed;
         this.interval = interval / this.speed;
+        this.angle = angle*Math.PI/180
     }
     update() {
         if (this.bulletTime  == undefined) {
@@ -44,8 +45,8 @@ class StraightPattern {
             this.bulletTime = this.game.time.now + this.interval;
             let bullet = this.bullets.getFirstExists(false);
 
-            let vx = 0;
-            let vy = this.speed;
+            let vx = Math.sin(this.angle)*this.speed;
+            let vy = Math.cos(this.angle)*this.speed;
 
             if (bullet) {
                 bullet.reset(this.shooter.x, this.shooter.y);
@@ -75,7 +76,7 @@ export default class PatternsLibrary {
 
         console.log(this.game);
         bulletPatternsArray.push(new SinePattern(this.game, this.bullets, this.owner, frequency, amplitude, interval));
-        bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 100000, 400));
+        bulletPatternsArray.push(new StraightPattern(this.game, this.bullets, this.owner, 100000, 400,0));
 
         this.bulletPatterns = bulletPatternsArray;
     }
@@ -87,6 +88,6 @@ export default class PatternsLibrary {
     }
 
     getPatternAtRandom() {
-        return this.bulletPatterns[0];
+        return this.bulletPatterns[1];
     }
 }
