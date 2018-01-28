@@ -415,7 +415,12 @@ export default class extends Phaser.State {
         if (this.getRemainingTime() <= 0) {
             this.backgroundMusic.stop();
             this.gameStartTime = undefined;
-            this.game.state.start(config.victoryState);
+            this.game.state.start(
+                config.victoryState,
+                true,
+                false,
+                { hasHighScore: true, score: this.score }
+            );
         }
     }
 }
