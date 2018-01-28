@@ -5,8 +5,6 @@ import Phaser from 'phaser';
 import Player from '../sprites/Player';
 import Enemy from '../sprites/Enemy';
 
-import { handleEnemyHit, handlePlayerHit, handleEnemyPlayerCollision } from '../utils/CollisionHandler';
-
 export default class extends Phaser.State {
     init() {
         this.player = null;
@@ -20,10 +18,12 @@ export default class extends Phaser.State {
         this.scoreString = config.ui.texts.scoreText.text;
         this.livesString = config.ui.texts.livesText.text;
         this.currentGearText = config.ui.texts.gearsText.text;
+        this.tauntString = config.ui.texts.tauntText.text;
         this.scoreText = null;
         this.livesText = null;
         this.ui = null;
         this.gearTexts = [];
+        this.messageBox = null;
 
         this.backgroundTween = null;
 
@@ -174,29 +174,49 @@ export default class extends Phaser.State {
         this.ui = this.game.add.sprite(config.worldBoundX, 0, 'ui');
 
         this.scoreText = this.game.add.text(
-            config.worldBoundX + config.ui.padding,
+            config.worldBoundX + config.ui.paddingLeft,
             config.ui.texts.scoreText.y,
             this.scoreString + this.score,
             config.ui.textConfig
         );
 
         this.livesText = this.game.add.text(
-            config.worldBoundX + config.ui.padding,
+            config.worldBoundX + config.ui.paddingLeft,
             config.ui.texts.livesText.y,
             this.livesString + this.player.lives,
             config.ui.textConfig
         );
 
         this.currentGearText = this.game.add.text(
-            config.worldBoundX + config.ui.padding,
+            config.worldBoundX + config.ui.paddingLeft,
             config.ui.texts.gearsText.y,
             config.ui.texts.gearsText.text,
             config.ui.textConfig
         );
 
+        this.tauntText = this.game.add.text(
+            this.game.world.centerX - 290,
+            630,
+            this.tauntString,
+            config.ui.textConfig
+        );
+
+        this.messageBox = this.game.add.sprite(
+            this.game.world.centerX,
+            700,
+            'messageBox'
+        );
+        this.messageBox.anchor.setTo(0.5);
+
+        this.tauntGroup = this.game.add.group();
+        this.tauntGroup.add(this.messageBox);
+        this.tauntGroup.add(this.tauntText);
+
+        this.tauntGroup.alpha = 0;
+
         for (let i = 0; i < config.speeds.numberOfGears; i++) {
             this.gearTexts[i] = this.game.add.text(
-                config.worldBoundX + config.ui.padding + (config.ui.texts.gearsText.spacing * i),
+                config.worldBoundX + config.ui.paddingLeft + (config.ui.texts.gearsText.spacing * i),
                 config.ui.texts.gearsText.y + 55,
                 i + 1,
                 config.ui.textConfig
@@ -204,6 +224,10 @@ export default class extends Phaser.State {
         }
 
         this.backgroundMusic.play('', 0, 0.3, true, true);
+
+        this.player.events.onKilled.add((s) => {
+            this.game.state.start(config.defeatState);
+        }, this);
     }
 
     render() {
@@ -215,6 +239,64 @@ export default class extends Phaser.State {
         }
 
         this.world.bringToTop(this.explosions);
+    }
+
+    getRemainingTime() {
+        if (this.gameStartTime === undefined) {
+            return 0;
+        }
+        return config.gameDuration - ((this.game.time.now - this.gameStartTime) / 1000);
+    }
+
+    handlePlayerHit(player, object) {
+        if (this.game.time.now < this.player.hitCooldown) {
+            return;
+        }
+
+        this.player.lives--;
+        if (this.player.lives <= 0) {
+            this.player.kill();
+        }
+
+        this.player.hitCooldown = this.game.time.now + config.playerConfig.hitCooldown;
+
+        this.livesText.text = this.livesString + (this.player.lives - 1);
+
+        this.audioPlayerHit.play();
+
+        let explosion = this.player.explosions.getFirstExists(false);
+        explosion.animations.add('blueExplosion1');
+
+        explosion.reset(
+            this.player.body.x,
+            this.player.body.y
+        );
+        explosion.play('blueExplosion1', 30, false, true);
+
+        // Delete all bullets
+        this.fadeExit = this.game.add.tween(this.enemyBullets)
+            .to({ alpha: 0 }, 200, 'Linear', true)
+            .onComplete.add(() => {
+                this.enemyBullets.forEach((b) => { b.kill(); });
+                this.enemyBullets.alpha = 1;
+            });
+
+        if (this.enemy.game.time.now > config.enemyConfig.tauntDuration) {
+            this.enemy.changeState('taunt');
+            this.tauntText.text = Phaser.ArrayUtils.getRandomItem(config.enemyConfig.tauntMessages);
+
+            this.fadeTaunt = this.game.add.tween(this.tauntGroup)
+                .to({ alpha: 1 }, 400, 'Linear', true)
+                .onComplete.add(() => {
+                    setTimeout(() => {
+                        this.game.add.tween(this.tauntGroup)
+                            .to({ alpha: 0 }, 400, 'Linear', true)
+                            .onComplete.add(() => {
+                                this.enemyBullets.alpha = 1;
+                            });
+                    }, 1000);
+                });
+        }
     }
 
     update() {
@@ -229,7 +311,6 @@ export default class extends Phaser.State {
 
         let p = Math.random();
         if (p < (1 - Math.exp(-config.background.clouds.rate * dt))) {
-            console.log('cloud');
             let cloud = this.cloudGroup.getFirstExists(false);
 
             if (cloud) {
@@ -257,7 +338,8 @@ export default class extends Phaser.State {
             }
         }, this);
 
-        this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, () => {
+        this.game.physics.arcade.overlap(this.bullets, this.enemy, (enemy, bullet) => {
+            bullet.kill();
             this.audioHit.play();
 
             this.score += config.speeds.scoreMultipliers[this.player.currentGear - 1];
@@ -272,33 +354,19 @@ export default class extends Phaser.State {
                 this.enemy.body.y + (Math.floor(Math.random() * this.enemy.height) + 1)
             );
             explosion.play('blueExplosion1', 30, false, true);
-        }, this);
+        }, null, this);
 
-        this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, () => {
-            this.livesText.text = this.livesString + (this.player.lives - 1);
+        this.game.physics.arcade.overlap(this.enemyBullets, this.player, this.handlePlayerHit, null, this);
+        this.game.physics.arcade.overlap(this.enemy, this.player, this.handlePlayerHit, null, this);
 
-            if (this.player.game.time.now > this.player.hitCooldown) {
-                this.audioPlayerHit.play();
+        /* Victory once we stay long enough */
+        if (this.gameStartTime === undefined) {
+            this.gameStartTime = this.game.time.now;
+        }
 
-                let explosion = this.player.explosions.getFirstExists(false);
-                explosion.animations.add('blueExplosion1');
-
-                explosion.reset(
-                    this.player.body.x,
-                    this.player.body.y
-                );
-                explosion.play('blueExplosion1', 30, false, true);
-            }
-
-            // Delete all bullets
-            this.fadeExit = this.game.add.tween(this.enemyBullets)
-                .to({ alpha: 0 }, 200, 'Linear', true)
-                .onComplete.add(() => {
-                    this.enemyBullets.forEach((b) => { b.kill(); });
-                    this.enemyBullets.alpha = 1;
-                });
-        }, this);
-
-        this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
+        if (this.getRemainingTime() <= 0) {
+            this.gameStartTime = undefined;
+            this.game.state.start(config.victoryState);
+        }
     }
 }

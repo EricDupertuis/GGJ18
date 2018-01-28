@@ -18,7 +18,9 @@ export default class extends Phaser.State {
         this.load.image('enemyBullet', 'assets/placeholders/bullet.png');
         this.load.image('enemy', 'assets/placeholders/enemy.png');
         this.load.image('bullet', 'assets/placeholders/bullet.png');
-        this.load.image('ui', 'assets/placeholders/ui.png');
+
+        this.load.image('ui', 'assets/ui/uiBox.png');
+        this.load.image('messageBox', 'assets/ui/messageBox.png');
         this.game.load.image('credits', 'assets/images/credits.jpg');
         this.game.load.image('cloud', 'assets/images/cloud.png');
 
