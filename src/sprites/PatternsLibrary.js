@@ -25,6 +25,9 @@ class SinePattern {
                 bullet.reset(this.shooter.x, this.shooter.y);
                 bullet.body.velocity.x = vx;
                 bullet.body.velocity.y = vy;
+
+                bullet.animations.add('gearBullet');
+                bullet.play('gearBullet', 10, true);
             }
         }
     }
@@ -55,6 +58,9 @@ class StraightPattern {
                 bullet.reset(this.shooter.x, this.shooter.y);
                 bullet.body.velocity.x = vx;
                 bullet.body.velocity.y = vy;
+
+                bullet.animations.add('gearBullet');
+                bullet.play('gearBullet', 10, true);
             }
         }
     }
@@ -110,6 +116,10 @@ class RandomBulletEmitter {
                 bullet.reset(this.shooter.x, this.shooter.y);
                 bullet.body.velocity.x = vx;
                 bullet.body.velocity.y = vy;
+
+                bullet.animations.add('gearBullet');
+                bullet.play('gearBullet', 10, true);
+
 
                 /* Store the bullet as part of our group, but free it on death.
                  * This is useful to apply behaviour to bullets (see below). */
@@ -210,6 +220,9 @@ class CrossAimPattern {
                         bullet.reset(bulletX, bulletY);
                         bullet.body.velocity.x = vx;
                         bullet.body.velocity.y = vy;
+
+                        bullet.animations.add('gearBullet');
+                        bullet.play('gearBullet', 10, true);
                     }
                 }
             }
@@ -264,6 +277,9 @@ class CrossEmitter {
                     bullet.reset(this.shooter.x, this.shooter.y);
                     bullet.body.velocity.x = vx;
                     bullet.body.velocity.y = vy;
+
+                    bullet.animations.add('gearBullet');
+                    bullet.play('gearBullet', 10, true);
                 }
             }
         }
