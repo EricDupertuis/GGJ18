@@ -5,6 +5,11 @@ export default {
     worldBoundY: 880,
     localStorageName: 'ggj18',
     showMenu: false,
+    background: {
+        scrollSpeed: 200,
+        scale: 4,
+        specialTileProbability: 0.15
+    },
     speeds: {
         numberOfGears: 3,
         maxSpeed: 500,
