@@ -159,17 +159,14 @@ export default class extends Phaser.State {
             player: this.player,
             x: this.world.centerX,
             y: -200,
-            asset: 'boss',
+            asset: 'enemy',
             enemyBullets: this.enemyBullets,
             explosions: this.explosions,
             audio: this.audioLoad
         });
 
-        this.enemy.scale.setTo(1.2);
-        this.enemy.animations.add('boss');
-        this.enemy.play('boss', 10, true);
-        this.enemy.anchor.set(0.5, 0.5);
-        this.enemy.body.setSize(250, 135, 0, 40);
+        // TODO: Change when we get a real asset
+        this.enemy.scale.setTo(0.5, 0.5);
 
         this.game.add.existing(this.player);
         this.game.add.existing(this.enemy);
@@ -256,7 +253,6 @@ export default class extends Phaser.State {
     render() {
         if (__DEV__) {
             this.game.debug.body(this.player);
-            this.game.debug.body(this.enemy);
             this.enemyBullets.forEach((b) => {
                 this.game.debug.body(b);
             }, this);

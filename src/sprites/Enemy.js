@@ -20,6 +20,8 @@ export default class extends Phaser.Sprite {
         this.tauntCooldown = 0;
 
         this.patterns = new PatternsLibrary(this, this.game, this.bullets, this.player, this.audio);
+
+        this.health = config.enemyConfig.health;
         this.state = config.enemyConfig.startingState;
     }
 
