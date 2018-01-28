@@ -84,24 +84,28 @@ export default {
             fill: '#fff'
         },
         texts: {
+            highscoreText: {
+                text: 'Highscore: ',
+                y: 50
+            },
             scoreText: {
                 text: 'Score: ',
-                y: 50
+                y: 105
             },
             livesText: {
                 text: 'Lives: ',
-                y: 105
+                y: 160
             },
             gearsText: {
                 text: 'Current gear: ',
-                y: 160,
+                y: 215,
                 spacing: 35
             },
             timeText: {
-                y: 270
+                y: 325
             },
             timerText: {
-                y: 325
+                y: 380
             },
             tauntText: {
                 text: '',

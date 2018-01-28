@@ -71,10 +71,7 @@ export default class extends Phaser.State {
 
     postScore(path, name, score) {
         let xhr = new XMLHttpRequest();
-        let data = [];
 
-        data['name'] = name;
-        data['score'] = score;
         xhr.open(
             'POST',
             path,
@@ -83,7 +80,6 @@ export default class extends Phaser.State {
         xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
       
         // send the collected data as JSON
-        xhr.send(JSON.stringify(data));
-      
+        xhr.send(JSON.stringify({name: name, score: score}));
     }
 }
