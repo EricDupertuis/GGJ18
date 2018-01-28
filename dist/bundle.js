@@ -1522,7 +1522,7 @@ exports.default = {
     localStorageName: 'ggj18',
     showMenu: true,
 
-    gameDuration: 60,
+    gameDuration: 180,
     victoryState: 'Credits',
     defeatState: 'Credits',
 
@@ -1574,7 +1574,7 @@ exports.default = {
             rightPattern: 'aim+cross',
             movementPeriod: 15
         },
-        tauntMessages: ['All you bases are belong to us!', 'Not sure if "1" means you have\none extra life, or if it is\nyour last...', 'Don\'t look at me, look at the\nroad! That\'s how accidents\nhappen.', 'Do you even SHMUP?', 'Go home and be a family man!', 'Unfortunately, I\'m pretty\ngood at dodging.', 'That was a pointless encounter\nwith a pointless person.', 'Zug-zug!']
+        tauntMessages: ['All you bases are belong to us!', 'Not sure if "1" means you have\none extra life, or if it is\nyour last...', 'Don\'t look at me, look at the\nroad! That\'s how accidents\nhappen.', 'Do any creatures outside of\nhumans even have ten fingers?', 'Do you even SHMUP?', 'Go home and be a family man!', 'Unfortunately, I\'m pretty\ngood at dodging.', 'That was a pointless encounter\nwith a pointless person.', 'Zug-zug!', 'You\'re not prepared!', 'Too slow!', 'It\'s just a flesh wound.', 'Let me guess?\nSomeone stole your big gun.']
     },
     colorPalette: {
         softBlue: '#7593C9',
@@ -10766,6 +10766,10 @@ var _Credits = __webpack_require__(/*! ./states/Credits */ 347);
 
 var _Credits2 = _interopRequireDefault(_Credits);
 
+var _Highscores = __webpack_require__(/*! ./states/Highscores */ 350);
+
+var _Highscores2 = _interopRequireDefault(_Highscores);
+
 var _config = __webpack_require__(/*! ./config */ 43);
 
 var _config2 = _interopRequireDefault(_config);
@@ -10795,6 +10799,7 @@ var Game = function (_Phaser$Game) {
         _this.state.add('Game', _Game2.default, false);
         _this.state.add('Menu', _Menu2.default, false);
         _this.state.add('Credits', _Credits2.default, false);
+        _this.state.add('Highscores', _Highscores2.default, false);
 
         // with Cordova with need to wait that the device is ready so we will call the Boot state in another file
         if (!window.cordova) {
@@ -11459,7 +11464,7 @@ var _class = function (_Phaser$State) {
             if (this.getRemainingTime() <= 0) {
                 this.backgroundMusic.stop();
                 this.gameStartTime = undefined;
-                this.game.state.start(_config2.default.victoryState);
+                this.game.state.start(_config2.default.victoryState, true, false, { hasHighScore: true, score: this.score });
             }
         }
     }]);
@@ -12361,6 +12366,8 @@ var _class = function (_Phaser$State) {
 
             this.menuEntries[1] = this.game.add.text(this.game.world.centerX + 300, 360, 'Credits', this.textConfig);
 
+            this.menuEntries[2] = this.game.add.text(this.game.world.centerX + 300, 420, 'Highscores', this.textConfig);
+
             var instructionText = this.game.add.text(0, 0, _config2.default.instructionsText, this.instructionTextConfig);
 
             var width = 200;
@@ -12391,7 +12398,7 @@ var _class = function (_Phaser$State) {
             this.menuEntries[this.selectedMenu].alpha = 1;
 
             if (this.goKey.justDown) {
-                var nextState = ['Game', 'Credits'];
+                var nextState = ['Game', 'Credits', 'Highscores'];
                 this.game.state.start(nextState[this.selectedMenu]);
             }
         }
@@ -12478,15 +12485,14 @@ var _class = function (_Phaser$State) {
             this.background = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'credits');
             this.creditText = this.game.add.text(this.game.world.centerX + 450, this.game.world.centerY - 200, this.credits, textConfig);
 
-            this.gameOverText = this.game.add.text(200, this.game.world.centerY - 230, 'Game Over', {
-                font: '64px Space Mono',
-                fill: '#fff'
-            });
-
             this.creditText.setTextBounds(0, 0, 100, 400);
             this.creditText.anchor.set(0.5);
 
             if (this.hasHighScore) {
+                this.gameOverText = this.game.add.text(200, this.game.world.centerY - 230, 'Game Over', {
+                    font: '64px Space Mono',
+                    fill: '#fff'
+                });
                 this.highScoreText = this.game.add.text(200, this.game.world.centerY, 'Your score: ' + this.score, {
                     font: '64px Space Mono',
                     fill: '#fff'
@@ -12527,6 +12533,19 @@ var _class = function (_Phaser$State) {
 }(_phaser2.default.State);
 
 exports.default = _class;
+
+/***/ }),
+/* 348 */,
+/* 349 */,
+/* 350 */
+/*!**********************************!*\
+  !*** ./src/states/Highscores.js ***!
+  \**********************************/
+/*! dynamic exports provided */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/eric/Projects/ggj18/src/states/Highscores.js'\n    at Error (native)");
 
 /***/ })
 ],[130]);

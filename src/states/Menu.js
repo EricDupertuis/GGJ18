@@ -49,6 +49,13 @@ export default class extends Phaser.State {
             this.textConfig
         );
 
+        this.menuEntries[2] = this.game.add.text(
+            this.game.world.centerX + 300,
+            420,
+            'Highscores',
+            this.textConfig
+        );
+
         let instructionText = this.game.add.text(
             0, 0,
             config.instructionsText,
@@ -82,7 +89,7 @@ export default class extends Phaser.State {
         this.menuEntries[this.selectedMenu].alpha = 1;
 
         if (this.goKey.justDown) {
-            let nextState = ['Game', 'Credits'];
+            let nextState = ['Game', 'Credits', 'Highscores'];
             this.game.state.start(nextState[this.selectedMenu]);
         }
     }

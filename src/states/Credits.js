@@ -23,20 +23,19 @@ export default class extends Phaser.State {
             textConfig
         );
 
-        this.gameOverText = this.game.add.text(
-            200,
-            this.game.world.centerY - 230,
-            'Game Over',
-            {
-                font: '64px Space Mono',
-                fill: '#fff'
-            }
-        );
-
         this.creditText.setTextBounds(0, 0, 100, 400);
         this.creditText.anchor.set(0.5);
 
         if (this.hasHighScore) {
+            this.gameOverText = this.game.add.text(
+                200,
+                this.game.world.centerY - 230,
+                'Game Over',
+                {
+                    font: '64px Space Mono',
+                    fill: '#fff'
+                }
+            );
             this.highScoreText = this.game.add.text(
                 200,
                 this.game.world.centerY,
