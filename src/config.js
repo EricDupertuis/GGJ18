@@ -10,6 +10,12 @@ export default {
     victoryState: 'Menu',
     defeatState: 'Credits',
 
+    server: {
+        baseUrl: 'http://ggj18-highscore.antoinealb.net',
+        getPath: '/',
+        postPath: '/add_score'
+    },
+
     background: {
         scrollSpeed: 150,
         scale: 4,

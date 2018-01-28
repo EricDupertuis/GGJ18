@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import config from '../config';
 
 export default class extends Phaser.State {
-    init(params = {hasHighScore: false, score: 0}) {
+    init(params = { hasHighScore: false, score: 0 }) {
         this.credits = 'A Game By :\nAntoine Albertelli\nAnthony Chappuis\nEric Dupertuis';
         this.goKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.hasHighScore = params.hasHighScore;
@@ -46,6 +46,18 @@ export default class extends Phaser.State {
                     fill: '#fff'
                 }
             );
+            
+            setTimeout(() => {
+                let playerName = prompt('Please enter your name', '');
+
+                if (playerName != null) {
+                    this.postScore(
+                        config.server.baseUrl + config.server.postPath,
+                        playerName,
+                        this.score
+                    );
+                }
+            }, 2000);
         }
 
         this.background.alpha = 0.4;
@@ -55,5 +67,23 @@ export default class extends Phaser.State {
         if (this.goKey.isDown) {
             this.game.state.start('Menu');
         }
+    }
+
+    postScore(path, name, score) {
+        let xhr = new XMLHttpRequest();
+        let data = [];
+
+        data['name'] = name;
+        data['score'] = score;
+        xhr.open(
+            'POST',
+            path,
+            true
+        );
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+      
+        // send the collected data as JSON
+        xhr.send(JSON.stringify(data));
+      
     }
 }
