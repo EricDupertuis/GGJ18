@@ -2,8 +2,8 @@ node_modules/
 www/
 platforms/
 plugins/
-dist/
 .vscode/
 *.log
 build/
 /index.html
+*.js.map
