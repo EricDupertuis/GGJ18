@@ -22,8 +22,8 @@ export default class extends Phaser.State {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.background = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'menu-background');
-
-        this.background.tint = 0x909090;
+        this.stage.backgroundColor = '#000000';
+        this.background.alpha = 0.6;
 
         this.menuEntries[0] = this.game.add.text(
             this.game.world.centerX + 300,
