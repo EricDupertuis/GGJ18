@@ -30,6 +30,7 @@ export default class extends Phaser.State {
         this.backgroundMusic = this.game.add.audio('mainMusic');
         this.audioHit = this.game.add.audio('hit1');
         this.audioPlayerHit = this.game.add.audio('explosion2');
+        this.audioLoad = this.game.add.audio('beam2');
     }
 
     preload() {
@@ -94,7 +95,8 @@ export default class extends Phaser.State {
             y: -200,
             asset: 'enemy',
             enemyBullets: this.enemyBullets,
-            explosions: this.explosions
+            explosions: this.explosions,
+            audio: this.audioLoad
         });
 
         // TODO: Change when we get a real asset
@@ -135,7 +137,7 @@ export default class extends Phaser.State {
             );
         }
 
-        this.backgroundMusic.play("", 0, 0.3, true, true);
+        this.backgroundMusic.play('', 0, 0.3, true, true);
     }
 
     render() {
