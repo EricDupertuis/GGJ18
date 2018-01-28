@@ -25,6 +25,7 @@ export default class extends Phaser.State {
         this.livesText = null;
         this.ui = null;
         this.gearTexts = [];
+        this.messageBox = null;
 
         this.backgroundTween = null;
 
@@ -181,13 +182,24 @@ export default class extends Phaser.State {
         );
 
         this.tauntText = this.game.add.text(
-            50,
-            50,
+            this.game.world.centerX - 290,
+            630,
             this.tauntString,
             config.ui.textConfig
         );
 
-        this.tauntText.alpha = 0;
+        this.messageBox = this.game.add.sprite(
+            this.game.world.centerX,
+            700,
+            'messageBox'
+        );
+        this.messageBox.anchor.setTo(0.5);
+
+        this.tauntGroup = this.game.add.group();
+        this.tauntGroup.add(this.messageBox);
+        this.tauntGroup.add(this.tauntText);
+
+        this.tauntGroup.alpha = 0;
 
         for (let i = 0; i < config.speeds.numberOfGears; i++) {
             this.gearTexts[i] = this.game.add.text(
@@ -272,10 +284,16 @@ export default class extends Phaser.State {
                 this.enemy.changeState('taunt');
                 this.tauntText.text = Phaser.ArrayUtils.getRandomItem(config.enemyConfig.tauntMessages);
 
-                this.fadeTauntEnter = this.game.add.tween(this.tauntText)
-                    .to({ alpha: 1 }, 200, 'Linear', true)
+                this.fadeTaunt = this.game.add.tween(this.tauntGroup)
+                    .to({ alpha: 1 }, 400, 'Linear', true)
                     .onComplete.add(() => {
-                        this.enemyBullets.alpha = 1;
+                        setTimeout(() => { 
+                            this.game.add.tween(this.tauntGroup)
+                            .to({ alpha: 0 }, 400, 'Linear', true)
+                            .onComplete.add(() => {
+                                this.enemyBullets.alpha = 1;
+                            });
+                        }, 1000);
                     });
             }
         }, this);
