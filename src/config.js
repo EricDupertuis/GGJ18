@@ -15,7 +15,9 @@ export default {
 
     },
     playerConfig: {
-        hitCooldown: 3000
+        hitCooldown: 3000,
+        shootAngles: [[-10, 0, 10], [-6, 0, 6], [-2, 0, 2]],
+        bulletSpeed: 500
     },
     enemyConfig: {
         health: 1000,

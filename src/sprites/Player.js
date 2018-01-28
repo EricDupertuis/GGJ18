@@ -60,25 +60,33 @@ export default class extends Phaser.Sprite {
     }
 
     fireBullet(update, angle = 0, animation = null) {
+        angle = angle * Math.PI / 180;
+
+        let bullet = this.bullets.getFirstExists(false);
+
+        if (bullet) {
+            bullet.scale.setTo(2, 2);
+            bullet.angle = -90;
+
+            bullet.animations.add('redBullet', null, 10, true, true);
+            bullet.animations.play('redBullet');
+
+            //  And fire it
+            bullet.reset(this.x, this.y + 8);
+            const speed = config.playerConfig.bulletSpeed;
+            bullet.body.velocity.y = -Math.cos(angle) * speed;
+            bullet.body.velocity.x = -Math.sin(angle) * speed;
+            bullet.fireTime = this.game.time.now;
+            bullet.bulletUpdate = update;
+        }
+    }
+
+    fireBullets() {
         if (this.game.time.now > this.bulletTime) {
-            angle = angle * Math.PI / 180;
-
-            let bullet = this.bullets.getFirstExists(false);
-
-            if (bullet) {
-                bullet.scale.setTo(2, 2);
-                bullet.angle = -90;
-
-                bullet.animations.add('redBullet', null, 10, true, true);
-                bullet.animations.play('redBullet');
-
-                //  And fire it
-                bullet.reset(this.x, this.y + 8);
-                bullet.body.velocity.y -= Math.cos(angle) * 500;
-                bullet.body.velocity.x += Math.sin(angle) * 100;
-                bullet.fireTime = this.game.time.now;
-                bullet.bulletUpdate = update;
-            }
+            const angles = config.playerConfig.shootAngles[this.currentGear - 1];
+            angles.forEach((a) => {
+                this.fireBullet(null, a, 'bullet');
+            }, this);
 
             this.bulletTime = this.game.time.now + 100;
         }
@@ -93,7 +101,7 @@ export default class extends Phaser.Sprite {
         // TODO, finish gamepad integration
         if (this.game.input.gamepad.supported && this.game.input.gamepad.active && this.pad.connected) {
             if (this.pad.isDown(Phaser.Gamepad.XBOX360_B)) {
-                this.fireBullet(null, 0, 'bullet');
+                this.fireBullets();
             }
 
             var rightStickX = this.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X);
@@ -133,7 +141,7 @@ export default class extends Phaser.Sprite {
             }
 
             if (this.mainGunButton.isDown) {
-                this.fireBullet(null, 0, 'bullet');
+                this.fireBullets();
             }
 
             if (this.shiftUp.justDown) {
