@@ -288,7 +288,7 @@ export default class extends Phaser.State {
             this.fadeTaunt = this.game.add.tween(this.tauntGroup)
                 .to({ alpha: 1 }, 400, 'Linear', true)
                 .onComplete.add(() => {
-                    setTimeout(() => { 
+                    setTimeout(() => {
                         this.game.add.tween(this.tauntGroup)
                             .to({ alpha: 0 }, 400, 'Linear', true)
                             .onComplete.add(() => {
@@ -358,12 +358,14 @@ export default class extends Phaser.State {
 
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, this.handlePlayerHit, null, this);
         this.game.physics.arcade.overlap(this.enemy, this.player, this.handlePlayerHit, null, this);
+
         /* Victory once we stay long enough */
         if (this.gameStartTime === undefined) {
             this.gameStartTime = this.game.time.now;
         }
 
         if (this.getRemainingTime() <= 0) {
+            this.gameStartTime = undefined;
             this.game.state.start(config.victoryState);
         }
     }
