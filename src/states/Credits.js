@@ -46,7 +46,7 @@ export default class extends Phaser.State {
                     fill: '#fff'
                 }
             );
-            
+
             setTimeout(() => {
                 let playerName = prompt('Please enter your name', '');
 
@@ -78,7 +78,7 @@ export default class extends Phaser.State {
             true
         );
         xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-      
+
         // send the collected data as JSON
         xhr.send(JSON.stringify({name: name, score: score}));
     }
