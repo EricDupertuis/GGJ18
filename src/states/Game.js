@@ -48,7 +48,7 @@ export default class extends Phaser.State {
         this.bullets.enableBody = true;
         this.bullets.createMultiple(300, 'redBullet');
         this.bullets.setAll('anchor.x', 0.5);
-        this.bullets.setAll('anchor.y', 1);
+        this.bullets.setAll('anchor.y', 0.5);
         this.bullets.setAll('outOfBoundsKill', true);
         this.bullets.setAll('checkWorldBounds', true);
 
@@ -191,6 +191,14 @@ export default class extends Phaser.State {
                 );
                 explosion.play('blueExplosion1', 30, false, true);
             }
+
+            // Delete all bullets
+            this.fadeExit = this.game.add.tween(this.enemyBullets)
+                .to({ alpha: 0 }, 200, 'Linear', true)
+                .onComplete.add(() => {
+                    this.enemyBullets.forEach((b) => { b.kill(); });
+                    this.enemyBullets.alpha = 1;
+                });
         }, this);
 
         this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);

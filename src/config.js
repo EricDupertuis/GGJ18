@@ -15,7 +15,9 @@ export default {
 
     },
     playerConfig: {
-        hitCooldown: 3000
+        hitCooldown: 3000,
+        shootAngles: [[-10, 0, 10], [-6, 0, 6], [-2, 0, 2]],
+        bulletSpeed: 500
     },
     enemyConfig: {
         health: 1000,
@@ -30,9 +32,9 @@ export default {
         enterDuration: 3,
         tauntDuration: 3,
         phase2: {
-            leftPattern: 'random',
+            leftPattern: 'random+sine',
             rightPattern: 'aim+cross',
-            movementPeriod: 5
+            movementPeriod: 15
         }
     },
     colorPalette: {
@@ -68,7 +70,7 @@ export default {
     patterns: {
         selected: 0,
         randomBulletEmitter: {
-            rate: 40,
+            rate: 20,
             bulletSpeed: 500,
 
             /* Bullet speed half time in second.
