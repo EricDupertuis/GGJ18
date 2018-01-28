@@ -6,7 +6,7 @@ export default {
     localStorageName: 'ggj18',
     showMenu: true,
 
-    gameDuration: 60,
+    gameDuration: 180,
     victoryState: 'Credits',
     defeatState: 'Credits',
 

@@ -36,7 +36,7 @@ export default class extends Phaser.State {
         );
 
         const width = 300;
-        text.setTextBounds(this.game.world.centerX - width, 80, 2 * width, 400);
+        text.setTextBounds((config.gameWidth / 2) - width, 80, 2 * width, 400);
     }
 
     update() {
