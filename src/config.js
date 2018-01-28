@@ -6,7 +6,7 @@ export default {
     localStorageName: 'ggj18',
     showMenu: false,
 
-    gameDuration: 10,
+    gameDuration: 240,
     victoryState: 'Menu',
     defeatState: 'Credits',
 
@@ -89,6 +89,12 @@ export default {
                 text: 'Current gear: ',
                 y: 160,
                 spacing: 35
+            },
+            timeText: {
+                y: 270
+            },
+            timerText: {
+                y: 325
             },
             tauntText: {
                 text: '',
