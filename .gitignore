@@ -4,6 +4,5 @@ platforms/
 plugins/
 .vscode/
 *.log
-build/
 /index.html
 *.js.map
