@@ -241,7 +241,12 @@ export default class extends Phaser.State {
         this.backgroundMusic.play('', 0, 0.3, true, true);
 
         this.player.events.onKilled.add((s) => {
-            this.game.state.start(config.defeatState);
+            this.game.state.start(
+                config.defeatState, 
+                true, 
+                false, 
+                {hasHighScore: true, score: this.score}
+            );
         }, this);
     }
 

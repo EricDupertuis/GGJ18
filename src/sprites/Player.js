@@ -21,7 +21,7 @@ export default class extends Phaser.Sprite {
         this.explosions = explosions;
 
         this.alive = true;
-        this.lives = 5;
+        this.lives = config.playerConfig.lives;
 
         this.body.setSize(2, 3, 15, 11);
 
