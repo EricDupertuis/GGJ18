@@ -4,11 +4,13 @@ export default {
     worldBoundX: 880,
     worldBoundY: 880,
     localStorageName: 'ggj18',
-    showMenu: false,
+    showMenu: true,
 
     gameDuration: 240,
     victoryState: 'Menu',
     defeatState: 'Credits',
+
+    instructionsText: 'Move: Arrow keys           Fire: Q            Shift gears up/down: W/E\nMake as many points as possible in the given time !',
 
     background: {
         scrollSpeed: 150,

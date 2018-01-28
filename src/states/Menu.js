@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import config from '../config';
 
 export default class extends Phaser.State {
     init() {
@@ -6,7 +7,16 @@ export default class extends Phaser.State {
         this.textConfig = {
             font: '40px Arial',
             fill: '#ecf0f1',
-            boundsAlignH: 'right'
+            boundsAlignH: 'center',
+            boundsAlignV: 'middle'
+        };
+
+        this.instructionTextConfig = {
+            font: '25px Arial',
+            fill: '#ecf0f1',
+            align: 'center',
+            boundsAlignH: 'center',
+            boundsAlignV: 'middle'
         };
 
         this.menuEntries = [];
@@ -38,6 +48,15 @@ export default class extends Phaser.State {
             'Credits',
             this.textConfig
         );
+
+        let instructionText = this.game.add.text(
+            0, 0,
+            config.instructionsText,
+            this.instructionTextConfig
+        );
+
+        const width = 200;
+        instructionText.setTextBounds(this.game.world.centerX - width, 650, 2 * width, 300);
 
         this.menuEntries.forEach((text) => {
             text.setTextBounds(0, 0, 100, 100);
