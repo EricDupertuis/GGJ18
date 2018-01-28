@@ -191,6 +191,14 @@ export default class extends Phaser.State {
                 );
                 explosion.play('blueExplosion1', 30, false, true);
             }
+
+            // Delete all bullets
+            this.fadeExit = this.game.add.tween(this.enemyBullets)
+                .to({ alpha: 0 }, 200, 'Linear', true)
+                .onComplete.add(() => {
+                    this.enemyBullets.forEach((b) => { b.kill(); });
+                    this.enemyBullets.alpha = 1;
+                });
         }, this);
 
         this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
