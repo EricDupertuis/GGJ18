@@ -20,7 +20,7 @@ export default {
         bulletSpeed: 500
     },
     enemyConfig: {
-        health: 1000,
+        health: 100000000000000000000000000000000000000000000000000000000000000000000000000000000000,
 
         // Physical model. Increase kp to make the enemy move faster and
         // increase kd to reduce the oscillations
