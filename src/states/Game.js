@@ -41,6 +41,10 @@ export default class extends Phaser.State {
 
     createGroundSprite(x, y = 0) {
         let s = this.groundGroup.getFirstExists(false);
+        if (s === undefined) {
+            return;
+        }
+
         s.reset(x, y - 128);
 
         // Normal tiles
@@ -72,6 +76,7 @@ export default class extends Phaser.State {
         this.groundGroup.setAll('anchor.y', 0);
         this.groundGroup.setAll('scale.x', config.background.scale);
         this.groundGroup.setAll('scale.y', config.background.scale);
+        this.groundGroup.setAll('alpha', config.background.alpha);
 
         this.groundGroup.forEach((s) => {
             s.events.onKilled.add((s) => {
@@ -81,11 +86,22 @@ export default class extends Phaser.State {
 
         let w = this.groundGroup.getFirstExists(false).width;
 
-        for (let y = -2 * w; y <= config.worldBoundY + w; y += w) {
+        for (let y = -2 * w; y <= config.worldBoundY; y += w) {
             for (let x = 0; x < config.worldBoundX; x += w) {
                 this.createGroundSprite(x, y);
             }
         }
+
+        this.cloudGroup = this.backgroundGroup.add(this.game.add.group());
+        this.cloudGroup.enableBody = true;
+        this.cloudGroup.createMultiple(10, 'cloud');
+        this.cloudGroup.setAll('scale.x', config.background.clouds.scale.x);
+        this.cloudGroup.setAll('scale.y', config.background.clouds.scale.y);
+        this.cloudGroup.setAll('anchor.x', 0.5);
+        this.cloudGroup.setAll('anchor.y', 1);
+        this.cloudGroup.setAll('alpha', config.background.clouds.alpha);
+        this.cloudGroup.setAll('outOfBoundsKill', true);
+        this.cloudGroup.setAll('checkWorldBounds', true);
     }
 
     create() {
@@ -112,7 +128,6 @@ export default class extends Phaser.State {
         this.enemyBullets.createMultiple(300, 'gearBullet');
         this.enemyBullets.setAll('scale.x', 0.25);
         this.enemyBullets.setAll('scale.y', 0.25);
-        this.enemyBullets.setAll('tint', config.colorPalette.avocadoGreen);
         this.enemyBullets.setAll('anchor.x', 0.5);
         this.enemyBullets.setAll('anchor.y', 0.5);
         this.enemyBullets.setAll('outOfBoundsKill', true);
@@ -225,8 +240,33 @@ export default class extends Phaser.State {
     }
 
     update() {
+        if (this.previousTime === undefined) {
+            this.previousTime = this.game.time.now;
+        }
+
+        /* Poisson distribution so that it is random but still interesting to
+         * see. */
+        let dt = (this.game.time.now - this.previousTime) / 1000;
+        this.previousTime = this.game.time.now;
+
+        let p = Math.random();
+        if (p < (1 - Math.exp(-config.background.clouds.rate * dt))) {
+            console.log('cloud');
+            let cloud = this.cloudGroup.getFirstExists(false);
+
+            if (cloud) {
+                let x = Math.random() * config.worldBoundX;
+                cloud.reset(x, 0);
+                cloud.body.velocity.y = config.background.clouds.speed;
+
+                let sx = Math.random() + 0.5;
+                let sy = Math.random() + 0.5;
+
+                cloud.scale.setTo(sx, sy);
+            }
+        }
+
         this.groundGroup.forEachAlive((s) => {
-            s.body.y += 1;
             if (s.body.y > config.worldBoundY + 128) {
                 s.kill();
             }

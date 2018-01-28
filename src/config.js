@@ -6,8 +6,15 @@ export default {
     localStorageName: 'ggj18',
     showMenu: false,
     background: {
-        scrollSpeed: 200,
+        scrollSpeed: 150,
         scale: 4,
+        alpha: 0.7,
+        clouds: {
+            rate: 3,
+            speed: 300,
+            alpha: 0.4,
+            scale: {x: 1, y: 2}
+        },
         specialTileProbability: 0.15
     },
     speeds: {
