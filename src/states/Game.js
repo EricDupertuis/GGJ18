@@ -194,6 +194,20 @@ export default class extends Phaser.State {
             config.ui.textConfig
         );
 
+        this.timeText = this.game.add.text(
+            config.worldBoundX + config.ui.paddingLeft,
+            config.ui.texts.timeText.y,
+            'Remaining time: ',
+            config.ui.textConfig
+        );
+
+        this.timer = this.game.add.text(
+            config.worldBoundX + config.ui.paddingLeft,
+            config.ui.texts.timerText.y,
+            this.getRemainingTime(),
+            config.ui.textConfig
+        );
+
         this.tauntText = this.game.add.text(
             this.game.world.centerX - 290,
             630,
@@ -206,6 +220,7 @@ export default class extends Phaser.State {
             700,
             'messageBox'
         );
+
         this.messageBox.anchor.setTo(0.5);
 
         this.tauntGroup = this.game.add.group();
@@ -248,6 +263,17 @@ export default class extends Phaser.State {
         return config.gameDuration - ((this.game.time.now - this.gameStartTime) / 1000);
     }
 
+    prettyPrintTime(time) {
+        let mins = ~~((time % 3600) / 60);
+        let secs = time % 60;
+
+        let ret = "";
+
+        ret += "" + mins + " min " + (secs < 10 ? "0" : "");
+        ret += "" + Math.floor(secs) + " sec";
+        return ret;
+    }
+
     handlePlayerHit(player, object) {
         if (this.game.time.now < this.player.hitCooldown) {
             return;
@@ -288,7 +314,7 @@ export default class extends Phaser.State {
             this.fadeTaunt = this.game.add.tween(this.tauntGroup)
                 .to({ alpha: 1 }, 400, 'Linear', true)
                 .onComplete.add(() => {
-                    setTimeout(() => { 
+                    setTimeout(() => {
                         this.game.add.tween(this.tauntGroup)
                             .to({ alpha: 0 }, 400, 'Linear', true)
                             .onComplete.add(() => {
@@ -300,6 +326,8 @@ export default class extends Phaser.State {
     }
 
     update() {
+        this.timer.text = this.prettyPrintTime(this.getRemainingTime());
+
         if (this.previousTime === undefined) {
             this.previousTime = this.game.time.now;
         }
