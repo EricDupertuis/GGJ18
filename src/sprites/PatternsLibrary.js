@@ -120,7 +120,6 @@ class RandomBulletEmitter {
                 bullet.animations.add('gearBullet');
                 bullet.play('gearBullet', 10, true);
 
-
                 /* Store the bullet as part of our group, but free it on death.
                  * This is useful to apply behaviour to bullets (see below). */
                 this.ourBullets.push(bullet);
