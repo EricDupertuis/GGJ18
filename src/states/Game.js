@@ -254,6 +254,7 @@ export default class extends Phaser.State {
         this.backgroundMusic.play('', 0, 0.3, true, true);
 
         this.player.events.onKilled.add((s) => {
+            this.backgroundMusic.stop();
             this.game.state.start(
                 config.defeatState,
                 true,
@@ -412,6 +413,7 @@ export default class extends Phaser.State {
         }
 
         if (this.getRemainingTime() <= 0) {
+            this.backgroundMusic.stop();
             this.gameStartTime = undefined;
             this.game.state.start(config.victoryState);
         }

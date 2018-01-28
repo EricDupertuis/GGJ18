@@ -6,7 +6,7 @@ export default {
     localStorageName: 'ggj18',
     showMenu: true,
 
-    gameDuration: 240,
+    gameDuration: 60,
     victoryState: 'Menu',
     defeatState: 'Credits',
 
@@ -15,7 +15,7 @@ export default {
         getPath: '/',
         postPath: '/add_score'
     },
-    
+
     instructionsText: 'Move: Arrow keys           Fire: Q            Shift gears up/down: W/E\nMake as many points as possible in the given time !',
 
     background: {
