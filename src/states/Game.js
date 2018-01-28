@@ -37,11 +37,62 @@ export default class extends Phaser.State {
 
     }
 
+    createGroundSprite(x, y = 0) {
+        let s = this.groundGroup.getFirstExists(false);
+        s.reset(x, y - 128);
+
+        // Normal tiles
+        const normal = [0, 7, 11, 13, 18, 19, 22];
+        // All other tiles
+        let special = [];
+        for (let i = 0; i < 25; i++) {
+            if (normal.indexOf(i) < 0) {
+                special.push(i);
+            }
+        }
+
+        if (Math.random() < config.background.specialTileProbability) {
+            s.frame = special[Math.floor(Math.random() * special.length)];
+        } else {
+            s.frame = normal[Math.floor(Math.random() * normal.length)];
+        }
+
+        s.body.velocity.y = config.background.scrollSpeed;
+    }
+
+    createBackGround() {
+        let groundGroup = this.game.add.group();
+        this.groundGroup = this.backgroundGroup.add(groundGroup);
+
+        this.groundGroup.enableBody = true;
+        this.groundGroup.createMultiple(200, 'background');
+        this.groundGroup.setAll('anchor.x', 0);
+        this.groundGroup.setAll('anchor.y', 0);
+        this.groundGroup.setAll('scale.x', config.background.scale);
+        this.groundGroup.setAll('scale.y', config.background.scale);
+
+        this.groundGroup.forEach((s) => {
+            s.events.onKilled.add((s) => {
+                this.createGroundSprite(s.body.x, -1);
+            }, this);
+        }, this);
+
+        let w = this.groundGroup.getFirstExists(false).width;
+
+        for (let y = -2 * w; y <= config.worldBoundY + w; y += w) {
+            for (let x = 0; x < config.worldBoundX; x += w) {
+                this.createGroundSprite(x, y);
+            }
+        }
+    }
+
     create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.world.setBounds(0, 0, config.worldBoundX, config.worldBoundY);
+        this.stage.backgroundColor = '#000000';
 
         this.backgroundGroup = this.game.add.group();
+        this.createBackGround();
 
         //  Our bullet group
         this.bullets = this.game.add.group();
@@ -152,6 +203,13 @@ export default class extends Phaser.State {
     }
 
     update() {
+        this.groundGroup.forEachAlive((s) => {
+            s.body.y += 1;
+            if (s.body.y > config.worldBoundY + 128) {
+                s.kill();
+            }
+        });
+
         this.gearTexts.forEach(function (entry, i) {
             entry.alpha = 1;
             if (i !== this.player.currentGear - 1) {
