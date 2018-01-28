@@ -5,8 +5,6 @@ import Phaser from 'phaser';
 import Player from '../sprites/Player';
 import Enemy from '../sprites/Enemy';
 
-import { handleEnemyHit, handlePlayerHit, handleEnemyPlayerCollision } from '../utils/CollisionHandler';
-
 export default class extends Phaser.State {
     init() {
         this.player = null;
@@ -226,6 +224,10 @@ export default class extends Phaser.State {
         }
 
         this.backgroundMusic.play('', 0, 0.3, true, true);
+
+        this.player.events.onKilled.add((s) => {
+            this.game.state.start(config.defeatState);
+        }, this);
     }
 
     render() {
@@ -237,6 +239,64 @@ export default class extends Phaser.State {
         }
 
         this.world.bringToTop(this.explosions);
+    }
+
+    getRemainingTime() {
+        if (this.gameStartTime === undefined) {
+            return 0;
+        }
+        return config.gameDuration - ((this.game.time.now - this.gameStartTime) / 1000);
+    }
+
+    handlePlayerHit(player, object) {
+        if (this.game.time.now < this.player.hitCooldown) {
+            return;
+        }
+
+        this.player.lives--;
+        if (this.player.lives <= 0) {
+            this.player.kill();
+        }
+
+        this.player.hitCooldown = this.game.time.now + config.playerConfig.hitCooldown;
+
+        this.livesText.text = this.livesString + (this.player.lives - 1);
+
+        this.audioPlayerHit.play();
+
+        let explosion = this.player.explosions.getFirstExists(false);
+        explosion.animations.add('blueExplosion1');
+
+        explosion.reset(
+            this.player.body.x,
+            this.player.body.y
+        );
+        explosion.play('blueExplosion1', 30, false, true);
+
+        // Delete all bullets
+        this.fadeExit = this.game.add.tween(this.enemyBullets)
+            .to({ alpha: 0 }, 200, 'Linear', true)
+            .onComplete.add(() => {
+                this.enemyBullets.forEach((b) => { b.kill(); });
+                this.enemyBullets.alpha = 1;
+            });
+
+        if (this.enemy.game.time.now > config.enemyConfig.tauntDuration) {
+            this.enemy.changeState('taunt');
+            this.tauntText.text = Phaser.ArrayUtils.getRandomItem(config.enemyConfig.tauntMessages);
+
+            this.fadeTaunt = this.game.add.tween(this.tauntGroup)
+                .to({ alpha: 1 }, 400, 'Linear', true)
+                .onComplete.add(() => {
+                    setTimeout(() => { 
+                        this.game.add.tween(this.tauntGroup)
+                            .to({ alpha: 0 }, 400, 'Linear', true)
+                            .onComplete.add(() => {
+                                this.enemyBullets.alpha = 1;
+                            });
+                    }, 1000);
+                });
+        }
     }
 
     update() {
@@ -251,7 +311,6 @@ export default class extends Phaser.State {
 
         let p = Math.random();
         if (p < (1 - Math.exp(-config.background.clouds.rate * dt))) {
-            console.log('cloud');
             let cloud = this.cloudGroup.getFirstExists(false);
 
             if (cloud) {
@@ -279,7 +338,8 @@ export default class extends Phaser.State {
             }
         }, this);
 
-        this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, () => {
+        this.game.physics.arcade.overlap(this.bullets, this.enemy, (enemy, bullet) => {
+            bullet.kill();
             this.audioHit.play();
 
             this.score += config.speeds.scoreMultipliers[this.player.currentGear - 1];
@@ -294,50 +354,17 @@ export default class extends Phaser.State {
                 this.enemy.body.y + (Math.floor(Math.random() * this.enemy.height) + 1)
             );
             explosion.play('blueExplosion1', 30, false, true);
-        }, this);
+        }, null, this);
 
-        this.game.physics.arcade.overlap(this.enemyBullets, this.player, handlePlayerHit, () => {
-            this.livesText.text = this.livesString + (this.player.lives - 1);
+        this.game.physics.arcade.overlap(this.enemyBullets, this.player, this.handlePlayerHit, null, this);
+        this.game.physics.arcade.overlap(this.enemy, this.player, this.handlePlayerHit, null, this);
+        /* Victory once we stay long enough */
+        if (this.gameStartTime === undefined) {
+            this.gameStartTime = this.game.time.now;
+        }
 
-            if (this.player.game.time.now > this.player.hitCooldown) {
-                this.audioPlayerHit.play();
-
-                let explosion = this.player.explosions.getFirstExists(false);
-                explosion.animations.add('blueExplosion1');
-
-                explosion.reset(
-                    this.player.body.x,
-                    this.player.body.y
-                );
-                explosion.play('blueExplosion1', 30, false, true);
-            }
-
-            // Delete all bullets
-            this.fadeExit = this.game.add.tween(this.enemyBullets)
-                .to({ alpha: 0 }, 200, 'Linear', true)
-                .onComplete.add(() => {
-                    this.enemyBullets.forEach((b) => { b.kill(); });
-                    this.enemyBullets.alpha = 1;
-                });
-
-            if (this.enemy.game.time.now > config.enemyConfig.tauntDuration) {
-                this.enemy.changeState('taunt');
-                this.tauntText.text = Phaser.ArrayUtils.getRandomItem(config.enemyConfig.tauntMessages);
-
-                this.fadeTaunt = this.game.add.tween(this.tauntGroup)
-                    .to({ alpha: 1 }, 400, 'Linear', true)
-                    .onComplete.add(() => {
-                        setTimeout(() => { 
-                            this.game.add.tween(this.tauntGroup)
-                            .to({ alpha: 0 }, 400, 'Linear', true)
-                            .onComplete.add(() => {
-                                this.enemyBullets.alpha = 1;
-                            });
-                        }, 1000);
-                    });
-            }
-        }, this);
-
-        this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
+        if (this.getRemainingTime() <= 0) {
+            this.game.state.start(config.victoryState);
+        }
     }
 }

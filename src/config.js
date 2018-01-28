@@ -5,6 +5,11 @@ export default {
     worldBoundY: 880,
     localStorageName: 'ggj18',
     showMenu: false,
+
+    gameDuration: 10,
+    victoryState: 'Menu',
+    defeatState: 'Credits',
+
     background: {
         scrollSpeed: 150,
         scale: 4,
