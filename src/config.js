@@ -64,11 +64,16 @@ export default {
             'All you bases are belong to us!',
             'Not sure if "1" means you have\none extra life, or if it is\nyour last...',
             'Don\'t look at me, look at the\nroad! That\'s how accidents\nhappen.',
+            'Do any creatures outside of\nhumans even have ten fingers?',
             'Do you even SHMUP?',
             'Go home and be a family man!',
             'Unfortunately, I\'m pretty\ngood at dodging.',
             'That was a pointless encounter\nwith a pointless person.',
-            'Zug-zug!'
+            'Zug-zug!',
+            'You\'re not prepared!',
+            'Too slow!',
+            'It\'s just a flesh wound.',
+            'Let me guess?\nSomeone stole your big gun.'
         ]
     },
     colorPalette: {
