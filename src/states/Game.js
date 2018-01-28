@@ -242,9 +242,9 @@ export default class extends Phaser.State {
 
         this.player.events.onKilled.add((s) => {
             this.game.state.start(
-                config.defeatState, 
-                true, 
-                false, 
+                config.defeatState,
+                true,
+                false,
                 {hasHighScore: true, score: this.score}
             );
         }, this);
