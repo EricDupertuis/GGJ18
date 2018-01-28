@@ -35,7 +35,14 @@ export default {
             leftPattern: 'random+sine',
             rightPattern: 'aim+cross',
             movementPeriod: 15
-        }
+        },
+        tauntMessages: [
+            'lorem',
+            'Ipsum',
+            'Dolor',
+            'Sit',
+            'Amet'
+        ]
     },
     colorPalette: {
         softBlue: '#7593C9',
@@ -46,24 +53,30 @@ export default {
         darkGreen: '#264C47'
     },
     ui: {
-        padding: 20,
+        paddingTop: 70,
+        paddingLeft: 20,
         textConfig: {
-            font: '32px Risque',
+            font: '32px Space Mono',
             fill: '#fff'
         },
         texts: {
             scoreText: {
                 text: 'Score: ',
-                y: 20
+                y: 50
             },
             livesText: {
                 text: 'Lives: ',
-                y: 75
+                y: 105
             },
             gearsText: {
                 text: 'Current gear: ',
-                y: 130,
+                y: 160,
                 spacing: 35
+            },
+            tauntText: {
+                text: '',
+                x: 300,
+                y: 600
             }
         }
     },

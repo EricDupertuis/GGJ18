@@ -20,6 +20,7 @@ export default class extends Phaser.State {
         this.scoreString = config.ui.texts.scoreText.text;
         this.livesString = config.ui.texts.livesText.text;
         this.currentGearText = config.ui.texts.gearsText.text;
+        this.tauntString = config.ui.texts.tauntText.text;
         this.scoreText = null;
         this.livesText = null;
         this.ui = null;
@@ -108,29 +109,38 @@ export default class extends Phaser.State {
         this.ui = this.game.add.sprite(config.worldBoundX, 0, 'ui');
 
         this.scoreText = this.game.add.text(
-            config.worldBoundX + config.ui.padding,
+            config.worldBoundX + config.ui.paddingLeft,
             config.ui.texts.scoreText.y,
             this.scoreString + this.score,
             config.ui.textConfig
         );
 
         this.livesText = this.game.add.text(
-            config.worldBoundX + config.ui.padding,
+            config.worldBoundX + config.ui.paddingLeft,
             config.ui.texts.livesText.y,
             this.livesString + this.player.lives,
             config.ui.textConfig
         );
 
         this.currentGearText = this.game.add.text(
-            config.worldBoundX + config.ui.padding,
+            config.worldBoundX + config.ui.paddingLeft,
             config.ui.texts.gearsText.y,
             config.ui.texts.gearsText.text,
             config.ui.textConfig
         );
 
+        this.tauntText = this.game.add.text(
+            50,
+            50,
+            this.tauntString,
+            config.ui.textConfig
+        );
+
+        this.tauntText.alpha = 0;
+
         for (let i = 0; i < config.speeds.numberOfGears; i++) {
             this.gearTexts[i] = this.game.add.text(
-                config.worldBoundX + config.ui.padding + (config.ui.texts.gearsText.spacing * i),
+                config.worldBoundX + config.ui.paddingLeft + (config.ui.texts.gearsText.spacing * i),
                 config.ui.texts.gearsText.y + 55,
                 i + 1,
                 config.ui.textConfig
@@ -199,6 +209,17 @@ export default class extends Phaser.State {
                     this.enemyBullets.forEach((b) => { b.kill(); });
                     this.enemyBullets.alpha = 1;
                 });
+
+            if (this.enemy.game.time.now > config.enemyConfig.tauntDuration) {
+                this.enemy.changeState('taunt');
+                this.tauntText.text = Phaser.ArrayUtils.getRandomItem(config.enemyConfig.tauntMessages);
+
+                this.fadeTauntEnter = this.game.add.tween(this.tauntText)
+                    .to({ alpha: 1 }, 200, 'Linear', true)
+                    .onComplete.add(() => {
+                        this.enemyBullets.alpha = 1;
+                    });
+            }
         }, this);
 
         this.game.physics.arcade.overlap(this.enemy, this.player, handleEnemyPlayerCollision, null, this);
