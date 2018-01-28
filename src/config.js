@@ -53,11 +53,10 @@ export default {
             movementPeriod: 15
         },
         tauntMessages: [
-            'lorem',
-            'Ipsum',
-            'Dolor',
-            'Sit',
-            'Amet'
+            'All you bases are belong to us!',
+            'Not sure if "1" means you have\none extra life, or if it is\nyour last...',
+            'Don\'t look at me, look at the\nroad! That\'s how accidents\nhappen.',
+            'Zug-zug!'
         ]
     },
     colorPalette: {
