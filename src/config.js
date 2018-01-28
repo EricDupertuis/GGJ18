@@ -4,7 +4,7 @@ export default {
     worldBoundX: 880,
     worldBoundY: 880,
     localStorageName: 'ggj18',
-    showMenu: false,
+    showMenu: true,
 
     gameDuration: 240,
     victoryState: 'Menu',
@@ -15,6 +15,8 @@ export default {
         getPath: '/',
         postPath: '/add_score'
     },
+    
+    instructionsText: 'Move: Arrow keys           Fire: Q            Shift gears up/down: W/E\nMake as many points as possible in the given time !',
 
     background: {
         scrollSpeed: 150,
@@ -44,8 +46,6 @@ export default {
         bulletSpeed: 500
     },
     enemyConfig: {
-        health: 100000000000000000000000000000000000000000000000000000000000000000000000000000000000,
-
         // Physical model. Increase kp to make the enemy move faster and
         // increase kd to reduce the oscillations
         kp: 50,
@@ -61,11 +61,10 @@ export default {
             movementPeriod: 15
         },
         tauntMessages: [
-            'lorem',
-            'Ipsum',
-            'Dolor',
-            'Sit',
-            'Amet'
+            'All you bases are belong to us!',
+            'Not sure if "1" means you have\none extra life, or if it is\nyour last...',
+            'Don\'t look at me, look at the\nroad! That\'s how accidents\nhappen.',
+            'Zug-zug!'
         ]
     },
     colorPalette: {

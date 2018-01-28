@@ -20,8 +20,6 @@ export default class extends Phaser.Sprite {
         this.tauntCooldown = 0;
 
         this.patterns = new PatternsLibrary(this, this.game, this.bullets, this.player, this.audio);
-
-        this.health = config.enemyConfig.health;
         this.state = config.enemyConfig.startingState;
     }
 
@@ -61,14 +59,14 @@ export default class extends Phaser.Sprite {
                     this.state = 'right';
                     this.lastStateChange = this.game.time.now;
                 }
-                targetX = config.worldBoundX * 0.2;
+                targetX = config.worldBoundX * 0.1;
                 targetY = this.body.y;
             } else if (this.state === 'right') {
                 if (this.game.time.now > this.lastStateChange + movementPeriod * 1000) {
                     this.state = 'left';
                     this.lastStateChange = this.game.time.now;
                 }
-                targetX = config.worldBoundX * 0.8;
+                targetX = config.worldBoundX * 0.6;
                 targetY = this.body.y;
             }
 

@@ -1,7 +1,7 @@
 from flask import Flask, request, Response, send_file, jsonify
 import sqlite3
 
-db = sqlite3.connect('highscores.db')
+db = sqlite3.connect('db/highscores.db')
 
 app = Flask(__name__)
 
