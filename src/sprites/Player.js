@@ -48,7 +48,7 @@ export default class extends Phaser.Sprite {
         if (this.alive) {
             this.handleControls();
         }
- 
+
         /* Apply tint if we recently got hit. */
         if (this.game.time.now < this.hitCooldown) {
             this.tint = 0xff0000;

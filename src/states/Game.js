@@ -267,10 +267,10 @@ export default class extends Phaser.State {
         let mins = ~~((time % 3600) / 60);
         let secs = time % 60;
 
-        let ret = "";
+        let ret = '';
 
-        ret += "" + mins + " min " + (secs < 10 ? "0" : "");
-        ret += "" + Math.floor(secs) + " sec";
+        ret += '' + mins + ' min ' + (secs < 10 ? '0' : '');
+        ret += '' + Math.floor(secs) + ' sec';
         return ret;
     }
 
