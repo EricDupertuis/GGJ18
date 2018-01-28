@@ -15,6 +15,7 @@ export default class extends Phaser.State {
         this.background = null;
         this.score = 0;
 
+        this.highScoreString = config.ui.texts.highscoreText.text;
         this.scoreString = config.ui.texts.scoreText.text;
         this.livesString = config.ui.texts.livesText.text;
         this.currentGearText = config.ui.texts.gearsText.text;
@@ -34,7 +35,7 @@ export default class extends Phaser.State {
     }
 
     preload() {
-
+        this.load.json('highscores', config.server.baseUrl + config.server.getPath);
     }
 
     createGroundSprite(x, y = 0) {
@@ -107,6 +108,8 @@ export default class extends Phaser.State {
         this.game.world.setBounds(0, 0, config.worldBoundX, config.worldBoundY);
         this.stage.backgroundColor = '#000000';
 
+        let highscoreJSON = this.cache.getJSON('highscores');
+
         this.backgroundGroup = this.game.add.group();
         this.createBackGround();
 
@@ -175,6 +178,13 @@ export default class extends Phaser.State {
         this.game.add.existing(this.enemy);
 
         this.ui = this.game.add.sprite(config.worldBoundX, 0, 'ui');
+
+        this.highScoreText = this.game.add.text(
+            config.worldBoundX + config.ui.paddingLeft,
+            config.ui.texts.highscoreText.y,
+            this.highScoreString + highscoreJSON[0].score,
+            config.ui.textConfig
+        );
 
         this.scoreText = this.game.add.text(
             config.worldBoundX + config.ui.paddingLeft,
@@ -248,7 +258,7 @@ export default class extends Phaser.State {
                 config.defeatState,
                 true,
                 false,
-                {hasHighScore: true, score: this.score}
+                { hasHighScore: true, score: this.score }
             );
         }, this);
     }
