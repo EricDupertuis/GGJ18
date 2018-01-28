@@ -18,8 +18,10 @@ export default class extends Phaser.State {
         this.load.image('enemyBullet', 'assets/placeholders/bullet.png');
         this.load.image('enemy', 'assets/placeholders/enemy.png');
         this.load.image('bullet', 'assets/placeholders/bullet.png');
+
         this.load.image('ui', 'assets/ui/uiBox.png');
         this.load.image('messageBox', 'assets/ui/messageBox.png');
+        this.game.load.image('credits', 'assets/images/credits.jpg');
 
         this.load.image('gearBullet', 'assets/bullets/small-gear.png');
 
@@ -27,6 +29,7 @@ export default class extends Phaser.State {
         this.game.load.atlas('redBullet', 'assets/spritesheets/redBullet.png', 'assets/spritesheets/redBullet.json');
         this.game.load.atlas('blueExplosion1', 'assets/spritesheets/blueExplosion1.png', 'assets/spritesheets/blueExplosion1.json');
         this.game.load.atlas('redExplosion1', 'assets/spritesheets/redExplosion1.png', 'assets/spritesheets/redExplosion1.json');
+        this.game.load.atlas('background', 'assets/spritesheets/background.png', 'assets/spritesheets/background.json');
 
         this.game.load.audio('beam1', 'assets/audio/soundEffects/Beam1.ogg');
         this.game.load.audio('beam2', 'assets/audio/soundEffects/Beam2.ogg');
