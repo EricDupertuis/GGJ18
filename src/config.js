@@ -6,9 +6,15 @@ export default {
     localStorageName: 'ggj18',
     showMenu: true,
 
-    gameDuration: 240,
+    gameDuration: 60,
     victoryState: 'Menu',
     defeatState: 'Credits',
+
+    server: {
+        baseUrl: 'http://ggj18-highscore.antoinealb.net',
+        getPath: '/',
+        postPath: '/add_score'
+    },
 
     instructionsText: 'Move: Arrow keys           Fire: Q            Shift gears up/down: W/E\nMake as many points as possible in the given time !',
 
@@ -58,6 +64,10 @@ export default {
             'All you bases are belong to us!',
             'Not sure if "1" means you have\none extra life, or if it is\nyour last...',
             'Don\'t look at me, look at the\nroad! That\'s how accidents\nhappen.',
+            'Do you even SHMUP?',
+            'Go home and be a family man!',
+            'Unfortunately, I\'m pretty\ngood at dodging.',
+            'That was a pointless encounter\nwith a pointless person.',
             'Zug-zug!'
         ]
     },
@@ -77,24 +87,28 @@ export default {
             fill: '#fff'
         },
         texts: {
+            highscoreText: {
+                text: 'Highscore: ',
+                y: 50
+            },
             scoreText: {
                 text: 'Score: ',
-                y: 50
+                y: 105
             },
             livesText: {
                 text: 'Lives: ',
-                y: 105
+                y: 160
             },
             gearsText: {
                 text: 'Current gear: ',
-                y: 160,
+                y: 215,
                 spacing: 35
             },
             timeText: {
-                y: 270
+                y: 325
             },
             timerText: {
-                y: 325
+                y: 380
             },
             tauntText: {
                 text: '',
