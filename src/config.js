@@ -7,7 +7,7 @@ export default {
     showMenu: true,
 
     gameDuration: 60,
-    victoryState: 'Menu',
+    victoryState: 'Credits',
     defeatState: 'Credits',
 
     server: {

@@ -24,7 +24,7 @@ export default class extends Phaser.State {
         this.game.load.image('credits', 'assets/images/credits.jpg');
         this.game.load.image('cloud', 'assets/images/cloud.png');
 
-        this.load.image('gearBullet', 'assets/bullets/small-gear.png');
+        this.game.load.atlas('gearBullet', 'assets/spritesheets/small-gear.png', 'assets/spritesheets/small-gear.json');
 
         this.game.load.atlas('player', 'assets/spritesheets/player.png', 'assets/spritesheets/player.json');
         this.game.load.atlas('redBullet', 'assets/spritesheets/redBullet.png', 'assets/spritesheets/redBullet.json');
