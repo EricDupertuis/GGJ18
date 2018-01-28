@@ -32,9 +32,9 @@ export default {
         enterDuration: 3,
         tauntDuration: 3,
         phase2: {
-            leftPattern: 'random',
+            leftPattern: 'random+sine',
             rightPattern: 'aim+cross',
-            movementPeriod: 5
+            movementPeriod: 15
         }
     },
     colorPalette: {
@@ -70,7 +70,7 @@ export default {
     patterns: {
         selected: 0,
         randomBulletEmitter: {
-            rate: 40,
+            rate: 20,
             bulletSpeed: 500,
 
             /* Bullet speed half time in second.
