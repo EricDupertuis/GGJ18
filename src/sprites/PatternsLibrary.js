@@ -146,11 +146,12 @@ class RandomBulletEmitter {
 }
 
 class CrossAimPattern {
-    constructor(game, bullets, shooter, player) {
+    constructor(game, bullets, shooter, player, audio) {
         this.game = game;
         this.bullets = bullets;
         this.shooter = shooter;
         this.player = player;
+        this.audio = audio;
 
         this.stateChangeTime = 0;
 
@@ -216,6 +217,8 @@ class CrossAimPattern {
             this.playerX = undefined;
             this.playerY = undefined;
             if (this.game.time.now > this.stateChangeTime) {
+                this.audio.play('', 0, 0.3, false);
+
                 this.state = 'shooting';
             }
         }
@@ -280,12 +283,13 @@ class PatternCombinator {
 }
 
 export default class PatternsLibrary {
-    constructor(owner, game, bullets, player) {
+    constructor(owner, game, bullets, player, audio) {
         this.bulletPatterns = [];
         this.game = game;
         this.bullets = bullets;
         this.owner = owner;
         this.player = player;
+        this.audio = audio;
         this.loadPatterns();
     }
 
@@ -296,7 +300,7 @@ export default class PatternsLibrary {
 
         this.bulletPatterns['sine'] = new SinePattern(this.game, this.bullets, this.owner);
         this.bulletPatterns['star'] = new StarPattern(this.game, this.bullets, this.owner);
-        this.bulletPatterns['aim'] = new CrossAimPattern(this.game, this.bullets, this.owner, this.player);
+        this.bulletPatterns['aim'] = new CrossAimPattern(this.game, this.bullets, this.owner, this.player, this.audio);
         this.bulletPatterns['cross'] = new CrossEmitter(this.game, this.bullets, this.owner);
     }
 

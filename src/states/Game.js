@@ -26,6 +26,11 @@ export default class extends Phaser.State {
         this.gearTexts = [];
 
         this.backgroundTween = null;
+
+        this.backgroundMusic = this.game.add.audio('mainMusic');
+        this.audioHit = this.game.add.audio('hit1');
+        this.audioPlayerHit = this.game.add.audio('explosion2');
+        this.audioLoad = this.game.add.audio('beam2');
     }
 
     preload() {
@@ -90,7 +95,8 @@ export default class extends Phaser.State {
             y: -200,
             asset: 'enemy',
             enemyBullets: this.enemyBullets,
-            explosions: this.explosions
+            explosions: this.explosions,
+            audio: this.audioLoad
         });
 
         // TODO: Change when we get a real asset
@@ -130,6 +136,8 @@ export default class extends Phaser.State {
                 config.ui.textConfig
             );
         }
+
+        this.backgroundMusic.play('', 0, 0.3, true, true);
     }
 
     render() {
@@ -152,6 +160,8 @@ export default class extends Phaser.State {
         }, this);
 
         this.game.physics.arcade.overlap(this.bullets, this.enemy, handleEnemyHit, () => {
+            this.audioHit.play();
+
             this.score += config.speeds.scoreMultipliers[this.player.currentGear - 1];
             this.scoreText.text = this.scoreString + this.score;
 
@@ -170,6 +180,8 @@ export default class extends Phaser.State {
             this.livesText.text = this.livesString + (this.player.lives - 1);
 
             if (this.player.game.time.now > this.player.hitCooldown) {
+                this.audioPlayerHit.play();
+
                 let explosion = this.player.explosions.getFirstExists(false);
                 explosion.animations.add('blueExplosion1');
 

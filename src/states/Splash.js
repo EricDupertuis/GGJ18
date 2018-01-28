@@ -26,6 +26,19 @@ export default class extends Phaser.State {
         this.game.load.atlas('redBullet', 'assets/spritesheets/redBullet.png', 'assets/spritesheets/redBullet.json');
         this.game.load.atlas('blueExplosion1', 'assets/spritesheets/blueExplosion1.png', 'assets/spritesheets/blueExplosion1.json');
         this.game.load.atlas('redExplosion1', 'assets/spritesheets/redExplosion1.png', 'assets/spritesheets/redExplosion1.json');
+
+        this.game.load.audio('beam1', 'assets/audio/soundEffects/Beam1.ogg');
+        this.game.load.audio('beam2', 'assets/audio/soundEffects/Beam2.ogg');
+        this.game.load.audio('explosion1', 'assets/audio/soundEffects/Explosion1.ogg');
+        this.game.load.audio('explosion2', 'assets/audio/soundEffects/Explosion2.ogg');
+        this.game.load.audio('hit1', 'assets/audio/soundEffects/Hit1.ogg');
+        this.game.load.audio('Laser1', 'assets/audio/soundEffects/Laser1.ogg');
+        this.game.load.audio('Laser2', 'assets/audio/soundEffects/Laser2.ogg');
+        this.game.load.audio('lastExplosion1', 'assets/audio/soundEffects/LastExplosion1.ogg');
+        this.game.load.audio('load1', 'assets/audio/soundEffects/Load1.ogg');
+        this.game.load.audio('missile1', 'assets/audio/soundEffects/Missile1.ogg');
+
+        this.game.load.audio('mainMusic', 'assets/audio/music/mainMusic.ogg');
     }
 
     create() {
